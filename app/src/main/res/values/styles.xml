@@ -16,4 +16,15 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">#757575</item>
     </style>
+
+    <style name="PinBoxStyle">
+        <item name="android:layout_width">42dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:background">@drawable/rounded_white_background</item> <!-- or a stroked outline drawable -->
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#000000</item>
+    </style>
 </resources>
