@@ -39,4 +39,22 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.espresso.core
     androidTestImplementation libs.ext.junit
+
+    def room_version = "2.6.1"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    // 2. ViewModel & LiveData (Keeps your shopping cart safe during screen rotations)
+    def lifecycle_version = "2.7.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+
+    // 3. Retrofit & Gson (For syncing sales or fetching menu updates from a server)
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    // 4. ZXing Barcode Core (For scanning product barcodes using the device camera)
+    implementation 'com.google.zxing:core:3.5.3'
+
+    implementation("com.airbnb.android:lottie:6.3.0")
 }
