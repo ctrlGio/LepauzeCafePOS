@@ -113,6 +113,7 @@
             android:layout_height="match_parent"
             android:padding="24dp">
 
+            <!-- 1. DASHBOARD CONTENT VIEW -->
             <LinearLayout
                 android:id="@+id/layoutDashboardContent"
                 android:layout_width="match_parent"
@@ -240,28 +241,175 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- 2. MENU CONTENT VIEW -->
             <LinearLayout
                 android:id="@+id/layoutMenuContent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:visibility="gone">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Coffee Menu Management"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:textColor="#1A1F17"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1. Caramel Macchiato - ₱300.00 (Available)\n2. Spanish Latte - ₱500.00 (Available)\n3. Cold Brew - ₱30.00 (Out of Stock)"
-                    android:textSize="16sp"
-                    android:layout_marginTop="12dp"
-                    android:textColor="#444444"/>
+
+                <!-- Search & Filter Bar Container -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="#1A1F17"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:layout_marginBottom="1dp">
+
+                    <EditText
+                        android:id="@+id/etMenuSearch"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="#EEE9DF"
+                        android:hint="Search"
+                        android:paddingHorizontal="12dp"
+                        android:textSize="14sp"
+                        android:textColor="#1A1F17"
+                        android:textColorHint="#666666"
+                        android:layout_marginEnd="12dp"/>
+
+                    <Button
+                        android:id="@+id/btnCategoryFilter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:backgroundTint="#EEE9DF"
+                        android:text="Category"
+                        android:textColor="#1A1F17"
+                        android:textSize="14sp"
+                        android:textAllCaps="false"
+                        android:layout_marginEnd="12dp"/>
+
+                    <Button
+                        android:id="@+id/btnAddItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:backgroundTint="#EEE9DF"
+                        android:text="Add Item"
+                        android:textColor="#1A1F17"
+                        android:textSize="14sp"
+                        android:textAllCaps="false"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="#C9C1B1"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp">
+
+                    <CheckBox
+                        android:id="@+id/headerCheckbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Item Name"
+                        android:textStyle="bold"
+                        android:textColor="#1A1F17"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Category"
+                        android:textStyle="bold"
+                        android:textColor="#1A1F17"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Price"
+                        android:textStyle="bold"
+                        android:textColor="#1A1F17"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Cost"
+                        android:textStyle="bold"
+                        android:textColor="#1A1F17"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <!-- Sample Data Items List -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="#FFFFFF">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="16dp"
+                        android:background="?android:attr/selectableItemBackground">
+                        <CheckBox
+                            android:id="@+id/itemCheckbox1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2" android:text="Caramel Macchiato" android:textColor="#333333" android:textSize="14sp"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="Coffee" android:textColor="#666666" android:textSize="14sp"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="₱300.00" android:textColor="#333333" android:textSize="14sp"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="₱120.00" android:textColor="#333333" android:textSize="14sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="16dp"
+                        android:background="#F9F9F9">
+                        <CheckBox
+                            android:id="@+id/itemCheckbox2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2" android:text="Spanish Latte" android:textColor="#333333" android:textSize="14sp"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="Coffee" android:textColor="#666666" android:textSize="14sp"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="₱500.00" android:textColor="#333333" android:textSize="14sp"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="₱180.00" android:textColor="#333333" android:textSize="14sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="16dp"
+                        android:background="?android:attr/selectableItemBackground">
+                        <CheckBox
+                            android:id="@+id/itemCheckbox3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2" android:text="Cold Brew" android:textColor="#333333" android:textSize="14sp"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="Beverages" android:textColor="#666666" android:textSize="14sp"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="₱30.00" android:textColor="#333333" android:textSize="14sp"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="₱10.00" android:textColor="#333333" android:textSize="14sp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
             </LinearLayout>
 
+            <!-- 3. SALES CONTENT VIEW -->
             <LinearLayout
                 android:id="@+id/layoutSalesContent"
                 android:layout_width="match_parent"
@@ -284,6 +432,7 @@
                     android:textColor="#444444"/>
             </LinearLayout>
 
+            <!-- 4. EMPLOYEE CONTENT VIEW -->
             <LinearLayout
                 android:id="@+id/layoutEmployeeContent"
                 android:layout_width="match_parent"
