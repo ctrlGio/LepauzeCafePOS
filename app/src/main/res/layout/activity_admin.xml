@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="#EEE9DF">
+
+    <LinearLayout
+        android:layout_width="220dp"
+        android:layout_height="match_parent"
+        android:background="#1A1F17"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="#16A34A"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:text="Admin Profile"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnDashboard"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="#2A3126"
+                android:gravity="start|center_vertical"
+                android:text="Dashboard"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnMenu"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="#2A3126"
+                android:gravity="start|center_vertical"
+                android:text="Menu"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnSales"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="#2A3126"
+                android:gravity="start|center_vertical"
+                android:text="Sales"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnEmployee"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:backgroundTint="#2A3126"
+                android:gravity="start|center_vertical"
+                android:text="Employee"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:backgroundTint="#EA2A2A"
+            android:text="Logout"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="#817060"
+            android:paddingHorizontal="24dp">
+
+            <TextView
+                android:id="@+id/tvHeaderTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="LePauze Coffee - Dashboard"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="24dp">
+
+            <LinearLayout
+                android:id="@+id/layoutDashboardContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Admin Dashboard"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A1F17"
+                    android:layout_marginBottom="16dp"/>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Today's Orders: 142"
+                        android:textSize="16sp"
+                        android:padding="16dp"
+                        android:background="#C9C1B1"
+                        android:textColor="#1A1F17"
+                        android:textStyle="bold"
+                        android:layout_marginEnd="12dp"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Total Revenue: ₱3,240.00"
+                        android:textSize="16sp"
+                        android:padding="16dp"
+                        android:background="#C9C1B1"
+                        android:textColor="#1A1F17"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.2"
+                        android:background="#DFDAD0"
+                        android:orientation="vertical"
+                        android:padding="12dp"
+                        android:layout_marginEnd="12dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Weekly Sales Trend"
+                            android:textStyle="bold"
+                            android:textColor="#1A1F17"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="8dp"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="[Sales Line Graph Placeholder]"
+                            android:textColor="#666666"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#DFDAD0"
+                        android:orientation="vertical"
+                        android:padding="12dp"
+                        android:layout_marginEnd="12dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Best Sellers"
+                            android:textStyle="bold"
+                            android:textColor="#1A1F17"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="8dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1. Caramel Macchiato (48 sold)\n2. Spanish Latte (36 sold)\n3. Butter Croissant (24 sold)"
+                            android:textColor="#333333"
+                            android:textSize="14sp"
+                            android:lineSpacingExtra="4dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#DFDAD0"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cashier on Duty"
+                            android:textStyle="bold"
+                            android:textColor="#1A1F17"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="8dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Active Cashier:\n• Albert James Mactal\n\nRegister ID: POS Terminal #1\nStatus: Online &amp; Active"
+                            android:textColor="#333333"
+                            android:textSize="14sp"
+                            android:lineSpacingExtra="4dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutMenuContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Coffee Menu Management"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A1F17"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1. Caramel Macchiato - ₱300.00 (Available)\n2. Spanish Latte - ₱500.00 (Available)\n3. Cold Brew - ₱30.00 (Out of Stock)"
+                    android:textSize="16sp"
+                    android:layout_marginTop="12dp"
+                    android:textColor="#444444"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutSalesContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sales Reports &amp; History"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A1F17"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• [10:42 AM] Order #302 - ₱300.00\n• [10:30 AM] Order #301 - ₱500.00\n• [09:15 AM] Order #300 - ₱300.00"
+                    android:textSize="16sp"
+                    android:layout_marginTop="12dp"
+                    android:textColor="#444444"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutEmployeeContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Employee Staff Directory"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A1F17"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• Ryan James (Barista - Off Duty)\n• Albert James (Barista - Active Shift)\n• Gian Tuzon (Barista - Off Duty)"
+                    android:textSize="16sp"
+                    android:layout_marginTop="12dp"
+                    android:textColor="#444444"/>
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>
