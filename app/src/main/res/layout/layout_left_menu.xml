@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="16dp">
+
+    <!-- 1. Top App Logo / Name -->
+    <LinearLayout
+        android:id="@+id/layout_app_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- App Icon Placeholder -->
+        <FrameLayout
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_orange_rounded" /> <!-- Use your orange icon background drawable -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Makaryo"
+            android:textColor="#111827"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- 2. Cashier Profile Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_cashier_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="#F9FAFB"
+        app:strokeWidth="1dp"
+        app:strokeColor="#E5E7EB"
+        app:layout_constraintTop_toBottomOf="@id/layout_app_logo">
+
+        <!-- Add your profile contents here (Avatar, Name, Hours, Dropdown arrow) -->
+    </androidx.cardview.widget.CardView>
+
+
+    <!-- 3. Navigation Menu Items (Stacked Vertically) -->
+    <LinearLayout
+        android:id="@+id/layout_menu_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/card_cashier_profile">
+
+        <!-- Example Item: Cashier (Active state highlighted in orange) -->
+        <Button
+            android:id="@+id/nav_cashier"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:backgroundTint="#FFEDE6"
+            android:drawableStart="@drawable/baseline_point_of_sale_24"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical|start"
+            android:paddingStart="16dp"
+            android:text="Cashier"
+            android:textColor="#F97316"
+            android:textStyle="bold"
+            app:cornerRadius="8dp" />
+
+        <!-- Example Item: Table -->
+        <Button
+            android:id="@+id/nav_table"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:drawableStart="@drawable/baseline_table_restaurant_24"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical|start"
+            android:paddingStart="16dp"
+            android:text="Table"
+            android:textColor="#4B5563" />
+
+        <!-- Add Report, History, Supply buttons below similarly -->
+
+    </LinearLayout>
+
+
+    <!-- 4. Bottom Log Out Button (Pinned to Bottom) -->
+    <Button
+        android:id="@+id/btn_logout"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@android:color/transparent"
+        android:drawableStart="@drawable/baseline_logout_24"
+        android:drawablePadding="16dp"
+        android:gravity="center_vertical|start"
+        android:paddingStart="16dp"
+        android:text="Log out"
+        android:textColor="#F97316"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
