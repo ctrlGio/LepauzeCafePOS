@@ -7,6 +7,8 @@
     android:background="#F9FAFB"
     android:padding="24dp">
 
+    <!-- Title Section on the Left -->
+    <!-- Title Section on the Left -->
     <TextView
         android:id="@+id/tv_history_title"
         android:layout_width="wrap_content"
@@ -29,10 +31,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_history_title" />
 
+    <!-- Search Bar sitting right in the middle gap -->
     <EditText
         android:id="@+id/et_history_search"
-        android:layout_width="260dp"
+        android:layout_width="0dp"
         android:layout_height="40dp"
+        android:layout_marginStart="32dp"
         android:layout_marginEnd="12dp"
         android:background="@drawable/rounded_white_background"
         android:drawableStart="@drawable/baseline_search_24"
@@ -43,19 +47,54 @@
         android:textColorHint="#9CA3AF"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@id/btn_filter"
+        app:layout_constraintStart_toEndOf="@id/tv_history_sub"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Filter Button -->
     <ImageButton
         android:id="@+id/btn_filter"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginEnd="12dp"
         android:background="@drawable/rounded_white_background"
         android:contentDescription="Filter transactions"
         android:src="@drawable/baseline_filter_24"
         android:tooltipText="Filter"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_export"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="#4B5563" />
+
+    <!-- Export Button on the Far Right -->
+    <LinearLayout
+        android:id="@+id/btn_export"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/rounded_white_background"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Export"
+            android:textColor="#4B5563"
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/baseline_arrowdown_24"
+            app:tint="#4B5563" />
+
+    </LinearLayout>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
@@ -209,7 +248,7 @@
             <Button
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:backgroundTint="#F97316"
+                android:backgroundTint="#1A1F17"
                 android:minWidth="0dp"
                 android:padding="0dp"
                 android:text="1"
