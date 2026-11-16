@@ -79,18 +79,7 @@
             app:cornerRadius="8dp" />
 
         <!-- Example Item: Table -->
-        <Button
-            android:id="@+id/nav_table"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@android:color/transparent"
-            android:drawableStart="@drawable/baseline_table_restaurant_24"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical|start"
-            android:paddingStart="16dp"
-            android:text="Table"
-            android:textColor="#4B5563" />
+
 
         <!-- Add Report, History, Supply buttons below similarly -->
 
