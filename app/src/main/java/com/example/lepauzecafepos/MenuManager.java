@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -13,7 +15,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
@@ -23,18 +24,23 @@ import java.util.List;
 
 public class MenuManager {
 
+    private static final int ERROR_RED = Color.parseColor("#EA2A2A");
+
     private final Context context;
     private final LinearLayout menuItemsContainer;
     private final Button btnAddItem, btnArchiveSelected, btnViewArchive;
     private final CheckBox headerCheckbox;
 
     private final List<CheckBox> allRowCheckboxes = new ArrayList<>();
-    private final List<ArchivedItem> archivedItemsList = new ArrayList<>();
+    private final List<MenuItem> activeItems = new ArrayList<>();
+    private final List<MenuItem> archivedItems = new ArrayList<>();
 
-    private static class ArchivedItem {
+    private boolean isViewingArchive = false;
+
+    private static class MenuItem {
         String name, category, price, cost;
 
-        ArchivedItem(String name, String category, String price, String cost) {
+        MenuItem(String name, String category, String price, String cost) {
             this.name = name;
             this.category = category;
             this.price = price;
@@ -45,7 +51,6 @@ public class MenuManager {
     public MenuManager(Context context, View rootView) {
         this.context = context;
 
-        // Bind Menu Controls from rootView
         menuItemsContainer = rootView.findViewById(R.id.menuItemsContainer);
         btnAddItem = rootView.findViewById(R.id.btnAddItem);
         btnArchiveSelected = rootView.findViewById(R.id.btnArchiveSelected);
@@ -53,8 +58,14 @@ public class MenuManager {
         headerCheckbox = rootView.findViewById(R.id.headerCheckbox);
 
         if (btnArchiveSelected != null) {
+            btnArchiveSelected.setText("Archive Selected");
             btnArchiveSelected.setEnabled(false);
             btnArchiveSelected.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#555555")));
+        }
+
+        if (btnViewArchive != null) {
+            btnViewArchive.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#817060")));
+            btnViewArchive.setOnClickListener(v -> toggleArchiveView());
         }
 
         if (headerCheckbox != null) {
@@ -64,7 +75,7 @@ public class MenuManager {
                         cb.setChecked(isChecked);
                     }
                 }
-                updateArchiveButtonState();
+                updateActionButtonState();
             });
         }
 
@@ -72,14 +83,45 @@ public class MenuManager {
             btnAddItem.setOnClickListener(v -> showAddItemDialog());
         }
         if (btnArchiveSelected != null) {
-            btnArchiveSelected.setOnClickListener(v -> bulkArchiveSelectedItems());
+            btnArchiveSelected.setOnClickListener(v -> {
+                if (isViewingArchive) {
+                    confirmRestoreSelectedItems();
+                } else {
+                    confirmArchiveSelectedItems();
+                }
+            });
         }
-        if (btnViewArchive != null) {
-            btnViewArchive.setOnClickListener(v -> showArchiveDialog());
-        }
+
+        seedInitialItems(); // To be deleted pag di na need ng sample items sa menu
+        refreshTableUI();
     }
 
-    private void updateArchiveButtonState() {
+    // eto den
+    private void seedInitialItems() {
+        activeItems.add(new MenuItem("Iced Spanish Latte", "Coffee", "₱145.00", "₱42.00"));
+        activeItems.add(new MenuItem("Caramel Macchiato", "Coffee", "₱155.00", "₱48.00"));
+        activeItems.add(new MenuItem("Iced Americano", "Coffee", "₱120.00", "₱28.00"));
+        activeItems.add(new MenuItem("Iced Matcha Latte", "Non-Coffee", "₱160.00", "₱55.00"));
+        activeItems.add(new MenuItem("Butter Croissant", "Pastries", "₱95.00", "₱35.00"));
+    }
+    // hanggang dito sa line na to delete
+
+    private void toggleArchiveView() {
+        isViewingArchive = !isViewingArchive;
+        if (isViewingArchive) {
+            if (btnViewArchive != null) btnViewArchive.setText("Go Back");
+            if (btnAddItem != null) btnAddItem.setVisibility(View.GONE);
+            if (btnArchiveSelected != null) btnArchiveSelected.setText("Restore Selected");
+        } else {
+            if (btnViewArchive != null) btnViewArchive.setText("View Archive");
+            if (btnAddItem != null) btnAddItem.setVisibility(View.VISIBLE);
+            if (btnArchiveSelected != null) btnArchiveSelected.setText("Archive Selected");
+        }
+        if (headerCheckbox != null) headerCheckbox.setChecked(false);
+        refreshTableUI();
+    }
+
+    private void updateActionButtonState() {
         boolean anyChecked = false;
         for (CheckBox cb : allRowCheckboxes) {
             if (cb != null && cb.isChecked()) {
@@ -90,7 +132,7 @@ public class MenuManager {
         if (btnArchiveSelected != null) {
             btnArchiveSelected.setEnabled(anyChecked);
             btnArchiveSelected.setBackgroundTintList(ColorStateList.valueOf(
-                    anyChecked ? Color.parseColor("#8B0000") : Color.parseColor("#555555")
+                    anyChecked ? Color.parseColor(isViewingArchive ? "#16A34A" : "#8B0000") : Color.parseColor("#555555")
             ));
         }
     }
@@ -157,10 +199,43 @@ public class MenuManager {
 
             if (price <= 0) return "0.0%";
             double margin = ((price - cost) / price) * 100.0;
-            return String.format("%.1f%%", margin);
+            return String.format(java.util.Locale.US, "%.1f%%", margin);
         } catch (Exception e) {
             return "0.0%";
         }
+    }
+
+    private void applyFieldError(EditText editText, ColorStateList defaultTint, String message) {
+        editText.setError(message);
+        editText.setBackgroundTintList(ColorStateList.valueOf(ERROR_RED));
+        editText.setTextColor(ERROR_RED);
+    }
+
+    private void clearFieldError(EditText editText, ColorStateList defaultTint, ColorStateList defaultTextColor) {
+        editText.setError(null);
+        if (defaultTint != null) {
+            editText.setBackgroundTintList(defaultTint);
+        }
+        if (defaultTextColor != null) {
+            editText.setTextColor(defaultTextColor);
+        }
+    }
+
+    private void attachClearErrorOnType(EditText editText, ColorStateList defaultTint, ColorStateList defaultTextColor) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (editText.getError() != null || (defaultTint != null && editText.getBackgroundTintList() != defaultTint)) {
+                    clearFieldError(editText, defaultTint, defaultTextColor);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
     private void showAddItemDialog() {
@@ -191,31 +266,95 @@ public class MenuManager {
         inputCost.setHint("45");
         layout.addView(createCurrencyInputRow(inputCost));
 
-        builder.setView(layout);
+        ColorStateList nameDefaultTint = inputName.getBackgroundTintList();
+        ColorStateList nameDefaultText = inputName.getTextColors();
+        ColorStateList categoryDefaultTint = inputCategory.getBackgroundTintList();
+        ColorStateList categoryDefaultText = inputCategory.getTextColors();
+        ColorStateList priceDefaultTint = inputPrice.getBackgroundTintList();
+        ColorStateList priceDefaultText = inputPrice.getTextColors();
+        ColorStateList costDefaultTint = inputCost.getBackgroundTintList();
+        ColorStateList costDefaultText = inputCost.getTextColors();
 
-        builder.setPositiveButton("Add Item", (dialog, which) -> {
+        attachClearErrorOnType(inputName, nameDefaultTint, nameDefaultText);
+        attachClearErrorOnType(inputCategory, categoryDefaultTint, categoryDefaultText);
+        attachClearErrorOnType(inputPrice, priceDefaultTint, priceDefaultText);
+        attachClearErrorOnType(inputCost, costDefaultTint, costDefaultText);
+
+        builder.setView(layout);
+        builder.setPositiveButton("Add Item", null);
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        Button addButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        addButton.setOnClickListener(v -> {
+            clearFieldError(inputName, nameDefaultTint, nameDefaultText);
+            clearFieldError(inputCategory, categoryDefaultTint, categoryDefaultText);
+            clearFieldError(inputPrice, priceDefaultTint, priceDefaultText);
+            clearFieldError(inputCost, costDefaultTint, costDefaultText);
+
             String name = inputName.getText().toString().trim();
             String category = inputCategory.getText().toString().trim();
             String rawPrice = inputPrice.getText().toString().trim();
             String rawCost = inputCost.getText().toString().trim();
 
-            if (name.isEmpty() || category.isEmpty() || rawPrice.isEmpty() || rawCost.isEmpty()) {
-                Toast.makeText(context, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+            boolean hasError = false;
+            EditText firstErrorField = null;
+
+            if (name.isEmpty()) {
+                applyFieldError(inputName, nameDefaultTint, "Item name cannot be blank");
+                hasError = true;
+                if (firstErrorField == null) firstErrorField = inputName;
+            }
+            if (category.isEmpty()) {
+                applyFieldError(inputCategory, categoryDefaultTint, "Category cannot be blank");
+                hasError = true;
+                if (firstErrorField == null) firstErrorField = inputCategory;
+            }
+            if (rawPrice.isEmpty()) {
+                applyFieldError(inputPrice, priceDefaultTint, "Price cannot be blank");
+                hasError = true;
+                if (firstErrorField == null) firstErrorField = inputPrice;
+            }
+            if (rawCost.isEmpty()) {
+                applyFieldError(inputCost, costDefaultTint, "Cost cannot be blank");
+                hasError = true;
+                if (firstErrorField == null) firstErrorField = inputCost;
+            }
+
+            if (hasError) {
+                Toast.makeText(context, "Please fill in all required fields.", Toast.LENGTH_SHORT).show();
+                if (firstErrorField != null) {
+                    firstErrorField.requestFocus();
+                }
                 return;
             }
 
             String formattedPrice = formatCurrencyInput(rawPrice);
             String formattedCost = formatCurrencyInput(rawCost);
 
-            addNewRowToTable(name, category, formattedPrice, formattedCost);
+            activeItems.add(new MenuItem(name, category, formattedPrice, formattedCost));
+            refreshTableUI();
+            dialog.dismiss();
             Toast.makeText(context, name + " added to menu!", Toast.LENGTH_SHORT).show();
         });
-
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-        builder.show();
     }
 
-    private void addNewRowToTable(String name, String category, String price, String cost) {
+    private void refreshTableUI() {
+        menuItemsContainer.removeAllViews();
+        allRowCheckboxes.clear();
+
+        List<MenuItem> targetList = isViewingArchive ? archivedItems : activeItems;
+
+        int index = 0;
+        for (MenuItem item : targetList) {
+            addMenuTableRow(item, index++);
+        }
+        updateActionButtonState();
+    }
+
+    private void addMenuTableRow(MenuItem item, int position) {
         int heightPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, context.getResources().getDisplayMetrics());
         int paddingPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, context.getResources().getDisplayMetrics());
         int cbWidthPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, context.getResources().getDisplayMetrics());
@@ -226,9 +365,7 @@ public class MenuManager {
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
         row.setPadding(paddingPx, 0, paddingPx, 0);
-
-        int childCount = menuItemsContainer.getChildCount();
-        row.setBackgroundColor(childCount % 2 == 1 ? Color.parseColor("#F9F9F9") : Color.WHITE);
+        row.setBackgroundColor(position % 2 == 1 ? Color.parseColor("#F9F9F9") : Color.WHITE);
 
         CheckBox checkBox = new CheckBox(context);
         LinearLayout.LayoutParams cbParams = new LinearLayout.LayoutParams(
@@ -236,30 +373,28 @@ public class MenuManager {
         cbParams.setMarginEnd(cbMarginEndPx);
         checkBox.setLayoutParams(cbParams);
         checkBox.setChecked(headerCheckbox != null && headerCheckbox.isChecked());
-        checkBox.setTag(row);
+        checkBox.setTag(item);
 
-        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> updateArchiveButtonState());
+        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> updateActionButtonState());
 
         allRowCheckboxes.add(checkBox);
         row.addView(checkBox);
 
-        TextView tvName = createCellTextView(name, 1.6f, "#333333");
+        TextView tvName = createCellTextView(item.name, 1.6f, "#333333");
         row.addView(tvName);
 
-        TextView tvCategory = createCellTextView(category, 1.1f, "#666666");
+        TextView tvCategory = createCellTextView(item.category, 1.1f, "#666666");
         row.addView(tvCategory);
 
-        TextView tvPrice = createCellTextView(price, 1.0f, "#333333");
+        TextView tvPrice = createCellTextView(item.price, 1.0f, "#333333");
         row.addView(tvPrice);
 
-        TextView tvCost = createCellTextView(cost, 1.0f, "#333333");
+        TextView tvCost = createCellTextView(item.cost, 1.0f, "#333333");
         row.addView(tvCost);
 
-        String marginText = calculateMargin(price, cost);
+        String marginText = calculateMargin(item.price, item.cost);
         TextView tvMargin = createCellTextView(marginText, 0.9f, "#16A34A");
         row.addView(tvMargin);
-
-        row.setTag(new TextView[]{tvName, tvCategory, tvPrice, tvCost, tvMargin});
 
         // Action Buttons Container
         LinearLayout actionLayout = new LinearLayout(context);
@@ -271,173 +406,110 @@ public class MenuManager {
 
         int iconSizePx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, context.getResources().getDisplayMetrics());
 
-        // Edit Icon Button
-        ImageButton btnEdit = new ImageButton(context);
-        btnEdit.setLayoutParams(new LinearLayout.LayoutParams(iconSizePx, iconSizePx));
-        btnEdit.setImageResource(R.drawable.ic_edit);
-        btnEdit.setBackgroundColor(Color.TRANSPARENT);
-        btnEdit.setColorFilter(Color.parseColor("#817060"));
-        btnEdit.setOnClickListener(v -> showEditDialog(tvName, tvCategory, tvPrice, tvCost, tvMargin));
-        actionLayout.addView(btnEdit);
+        if (!isViewingArchive) {
+            ImageButton btnEdit = new ImageButton(context);
+            btnEdit.setLayoutParams(new LinearLayout.LayoutParams(iconSizePx, iconSizePx));
+            btnEdit.setImageResource(R.drawable.ic_edit);
+            btnEdit.setBackgroundColor(Color.TRANSPARENT);
+            btnEdit.setColorFilter(Color.parseColor("#817060"));
+            btnEdit.setOnClickListener(v -> showEditDialog(item));
+            actionLayout.addView(btnEdit);
 
-        View spacer = new View(context);
-        spacer.setLayoutParams(new LinearLayout.LayoutParams(16, LinearLayout.LayoutParams.MATCH_PARENT));
-        actionLayout.addView(spacer);
+            View spacer = new View(context);
+            spacer.setLayoutParams(new LinearLayout.LayoutParams(16, LinearLayout.LayoutParams.MATCH_PARENT));
+            actionLayout.addView(spacer);
+        }
 
-        // Archive Icon Button
-        ImageButton btnArchive = new ImageButton(context);
-        btnArchive.setLayoutParams(new LinearLayout.LayoutParams(iconSizePx, iconSizePx));
-        btnArchive.setImageResource(R.drawable.ic_archive);
-        btnArchive.setBackgroundColor(Color.TRANSPARENT);
-        btnArchive.setColorFilter(Color.parseColor("#4A4A4A"));
-        btnArchive.setOnClickListener(v -> {
-            String currentName = tvName.getText().toString();
+        ImageButton btnArchiveToggle = new ImageButton(context);
+        btnArchiveToggle.setLayoutParams(new LinearLayout.LayoutParams(iconSizePx, iconSizePx));
+        btnArchiveToggle.setImageResource(isViewingArchive ? R.drawable.ic_restore : R.drawable.ic_archive);
+        btnArchiveToggle.setBackgroundColor(Color.TRANSPARENT);
+        btnArchiveToggle.setColorFilter(Color.parseColor(isViewingArchive ? "#16A34A" : "#4A4A4A"));
+        btnArchiveToggle.setOnClickListener(v -> {
+            String title = isViewingArchive ? "Restore Item" : "Archive Item";
+            String message = isViewingArchive
+                    ? "Are you sure you want to restore " + item.name + "?"
+                    : "Are you sure you want to archive " + item.name + "?";
+            String positiveBtn = isViewingArchive ? "Restore" : "Archive";
+
             new AlertDialog.Builder(context)
-                    .setTitle("Archive Item")
-                    .setMessage("Are you sure you want to archive " + currentName + "?")
-                    .setPositiveButton("Archive", (dialog, which) -> {
-                        archivedItemsList.add(new ArchivedItem(
-                                currentName,
-                                tvCategory.getText().toString(),
-                                tvPrice.getText().toString(),
-                                tvCost.getText().toString()
-                        ));
-                        menuItemsContainer.removeView(row);
-                        allRowCheckboxes.remove(checkBox);
-                        recolorTableRows();
-                        updateArchiveButtonState();
-                        Toast.makeText(context, currentName + " moved to archive.", Toast.LENGTH_SHORT).show();
+                    .setTitle(title)
+                    .setMessage(message)
+                    .setPositiveButton(positiveBtn, (dialog, which) -> {
+                        if (isViewingArchive) {
+                            archivedItems.remove(item);
+                            activeItems.add(item);
+                            Toast.makeText(context, item.name + " restored to menu!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            activeItems.remove(item);
+                            archivedItems.add(item);
+                            Toast.makeText(context, item.name + " moved to archive.", Toast.LENGTH_SHORT).show();
+                        }
+                        refreshTableUI();
                     })
                     .setNegativeButton("Cancel", null)
                     .show();
         });
-        actionLayout.addView(btnArchive);
+        actionLayout.addView(btnArchiveToggle);
 
         row.addView(actionLayout);
         menuItemsContainer.addView(row);
-        updateArchiveButtonState();
     }
 
-    private void recolorTableRows() {
-        for (int i = 0; i < menuItemsContainer.getChildCount(); i++) {
-            View child = menuItemsContainer.getChildAt(i);
-            child.setBackgroundColor(i % 2 == 1 ? Color.parseColor("#F9F9F9") : Color.WHITE);
-        }
-    }
-
-    private void bulkArchiveSelectedItems() {
-        List<View> rowsToRemove = new ArrayList<>();
-        List<CheckBox> checkboxesToRemove = new ArrayList<>();
-
+    private void confirmArchiveSelectedItems() {
+        List<MenuItem> toArchive = new ArrayList<>();
         for (CheckBox cb : allRowCheckboxes) {
             if (cb != null && cb.isChecked()) {
-                View row = (View) cb.getTag();
-                if (row != null) {
-                    rowsToRemove.add(row);
-                    checkboxesToRemove.add(cb);
-                }
+                MenuItem item = (MenuItem) cb.getTag();
+                if (item != null) toArchive.add(item);
             }
         }
 
-        if (rowsToRemove.isEmpty()) {
+        if (toArchive.isEmpty()) {
             Toast.makeText(context, "No items selected to archive.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        int selectedCount = rowsToRemove.size();
         new AlertDialog.Builder(context)
                 .setTitle("Archive Selected Items")
-                .setMessage("Are you sure you want to archive " + selectedCount + " selected item(s)?")
+                .setMessage("Are you sure you want to archive " + toArchive.size() + " selected item(s)?")
                 .setPositiveButton("Archive", (dialog, which) -> {
-                    for (View row : rowsToRemove) {
-                        TextView[] cells = (TextView[]) row.getTag();
-                        if (cells != null && cells.length >= 4) {
-                            archivedItemsList.add(new ArchivedItem(
-                                    cells[0].getText().toString(),
-                                    cells[1].getText().toString(),
-                                    cells[2].getText().toString(),
-                                    cells[3].getText().toString()
-                            ));
-                        }
-                        menuItemsContainer.removeView(row);
-                    }
-                    allRowCheckboxes.removeAll(checkboxesToRemove);
-                    recolorTableRows();
-
-                    if (headerCheckbox != null) {
-                        headerCheckbox.setChecked(false);
-                    }
-                    updateArchiveButtonState();
-                    Toast.makeText(context, selectedCount + " item(s) moved to archive.", Toast.LENGTH_SHORT).show();
+                    activeItems.removeAll(toArchive);
+                    archivedItems.addAll(toArchive);
+                    if (headerCheckbox != null) headerCheckbox.setChecked(false);
+                    refreshTableUI();
+                    Toast.makeText(context, toArchive.size() + " item(s) moved to archive.", Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
     }
 
-    private void showArchiveDialog() {
-        if (archivedItemsList.isEmpty()) {
-            new AlertDialog.Builder(context)
-                    .setTitle("Archived Items")
-                    .setMessage("There are no archived items.")
-                    .setPositiveButton("Close", null)
-                    .show();
+    private void confirmRestoreSelectedItems() {
+        List<MenuItem> toRestore = new ArrayList<>();
+        for (CheckBox cb : allRowCheckboxes) {
+            if (cb != null && cb.isChecked()) {
+                MenuItem item = (MenuItem) cb.getTag();
+                if (item != null) toRestore.add(item);
+            }
+        }
+
+        if (toRestore.isEmpty()) {
+            Toast.makeText(context, "No items selected to restore.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Archived Items (" + archivedItemsList.size() + ")");
-
-        LinearLayout layout = new LinearLayout(context);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(40, 24, 40, 24);
-
-        ScrollView scrollView = new ScrollView(context);
-        LinearLayout scrollContent = new LinearLayout(context);
-        scrollContent.setOrientation(LinearLayout.VERTICAL);
-
-        builder.setPositiveButton("Close", null);
-        AlertDialog dialogInstance = builder.create();
-
-        for (int i = 0; i < archivedItemsList.size(); i++) {
-            ArchivedItem item = archivedItemsList.get(i);
-
-            LinearLayout itemRow = new LinearLayout(context);
-            itemRow.setOrientation(LinearLayout.HORIZONTAL);
-            itemRow.setGravity(Gravity.CENTER_VERTICAL);
-            itemRow.setPadding(0, 12, 0, 12);
-
-            TextView tvInfo = new TextView(context);
-            tvInfo.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-            String itemMargin = calculateMargin(item.price, item.cost);
-            tvInfo.setText(item.name + " (" + item.category + ") - Price: " + item.price + " | Margin: " + itemMargin);
-            tvInfo.setTextColor(Color.parseColor("#333333"));
-            tvInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            itemRow.addView(tvInfo);
-
-            Button btnRestore = new Button(context);
-            btnRestore.setText("Restore");
-            btnRestore.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            btnRestore.setAllCaps(false);
-            btnRestore.setTextColor(Color.WHITE);
-            btnRestore.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#16A34A")));
-
-            final int index = i;
-            btnRestore.setOnClickListener(v -> {
-                addNewRowToTable(item.name, item.category, item.price, item.cost);
-                archivedItemsList.remove(index);
-                Toast.makeText(context, item.name + " restored to menu!", Toast.LENGTH_SHORT).show();
-                dialogInstance.dismiss();
-                showArchiveDialog();
-            });
-
-            itemRow.addView(btnRestore);
-            scrollContent.addView(itemRow);
-        }
-
-        scrollView.addView(scrollContent);
-        layout.addView(scrollView);
-        dialogInstance.setView(layout);
-        dialogInstance.show();
+        new AlertDialog.Builder(context)
+                .setTitle("Restore Selected Items")
+                .setMessage("Are you sure you want to restore " + toRestore.size() + " selected item(s)?")
+                .setPositiveButton("Restore", (dialog, which) -> {
+                    archivedItems.removeAll(toRestore);
+                    activeItems.addAll(toRestore);
+                    if (headerCheckbox != null) headerCheckbox.setChecked(false);
+                    refreshTableUI();
+                    Toast.makeText(context, toRestore.size() + " item(s) restored to menu!", Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     private TextView createCellTextView(String text, float weight, String hexColor) {
@@ -449,7 +521,7 @@ public class MenuManager {
         return tv;
     }
 
-    private void showEditDialog(TextView nameView, TextView categoryView, TextView priceView, TextView costView, TextView marginView) {
+    private void showEditDialog(MenuItem item) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Edit Menu Item");
 
@@ -459,44 +531,97 @@ public class MenuManager {
 
         layout.addView(createFormLabel("Item Name", 0));
         final EditText inputName = new EditText(context);
-        inputName.setText(nameView.getText().toString());
+        inputName.setText(item.name);
         layout.addView(inputName);
 
         layout.addView(createFormLabel("Category", 12));
         final EditText inputCategory = new EditText(context);
-        inputCategory.setText(categoryView.getText().toString());
+        inputCategory.setText(item.category);
         layout.addView(inputCategory);
 
         layout.addView(createFormLabel("Price", 12));
         final EditText inputPrice = new EditText(context);
-        inputPrice.setText(priceView.getText().toString().replace("₱", "").trim());
+        inputPrice.setText(item.price.replace("₱", "").trim());
         layout.addView(createCurrencyInputRow(inputPrice));
 
         layout.addView(createFormLabel("Cost", 12));
         final EditText inputCost = new EditText(context);
-        inputCost.setText(costView.getText().toString().replace("₱", "").trim());
+        inputCost.setText(item.cost.replace("₱", "").trim());
         layout.addView(createCurrencyInputRow(inputCost));
 
-        builder.setView(layout);
+        ColorStateList nameDefaultTint = inputName.getBackgroundTintList();
+        ColorStateList nameDefaultText = inputName.getTextColors();
+        ColorStateList categoryDefaultTint = inputCategory.getBackgroundTintList();
+        ColorStateList categoryDefaultText = inputCategory.getTextColors();
+        ColorStateList priceDefaultTint = inputPrice.getBackgroundTintList();
+        ColorStateList priceDefaultText = inputPrice.getTextColors();
+        ColorStateList costDefaultTint = inputCost.getBackgroundTintList();
+        ColorStateList costDefaultText = inputCost.getTextColors();
 
-        builder.setPositiveButton("Save", (dialog, which) -> {
+        attachClearErrorOnType(inputName, nameDefaultTint, nameDefaultText);
+        attachClearErrorOnType(inputCategory, categoryDefaultTint, categoryDefaultText);
+        attachClearErrorOnType(inputPrice, priceDefaultTint, priceDefaultText);
+        attachClearErrorOnType(inputCost, costDefaultTint, costDefaultText);
+
+        builder.setView(layout);
+        builder.setPositiveButton("Save", null);
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        Button saveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        saveButton.setOnClickListener(v -> {
+            clearFieldError(inputName, nameDefaultTint, nameDefaultText);
+            clearFieldError(inputCategory, categoryDefaultTint, categoryDefaultText);
+            clearFieldError(inputPrice, priceDefaultTint, priceDefaultText);
+            clearFieldError(inputCost, costDefaultTint, costDefaultText);
+
+            String name = inputName.getText().toString().trim();
+            String category = inputCategory.getText().toString().trim();
             String rawPrice = inputPrice.getText().toString().trim();
             String rawCost = inputCost.getText().toString().trim();
 
-            String formattedPrice = formatCurrencyInput(rawPrice);
-            String formattedCost = formatCurrencyInput(rawCost);
+            boolean hasError = false;
+            EditText firstErrorField = null;
 
-            nameView.setText(inputName.getText().toString().trim());
-            categoryView.setText(inputCategory.getText().toString().trim());
-            priceView.setText(formattedPrice);
-            costView.setText(formattedCost);
+            if (name.isEmpty()) {
+                applyFieldError(inputName, nameDefaultTint, "Item name cannot be blank");
+                hasError = true;
+                if (firstErrorField == null) firstErrorField = inputName;
+            }
+            if (category.isEmpty()) {
+                applyFieldError(inputCategory, categoryDefaultTint, "Category cannot be blank");
+                hasError = true;
+                if (firstErrorField == null) firstErrorField = inputCategory;
+            }
+            if (rawPrice.isEmpty()) {
+                applyFieldError(inputPrice, priceDefaultTint, "Price cannot be blank");
+                hasError = true;
+                if (firstErrorField == null) firstErrorField = inputPrice;
+            }
+            if (rawCost.isEmpty()) {
+                applyFieldError(inputCost, costDefaultTint, "Cost cannot be blank");
+                hasError = true;
+                if (firstErrorField == null) firstErrorField = inputCost;
+            }
 
-            marginView.setText(calculateMargin(formattedPrice, formattedCost));
+            if (hasError) {
+                Toast.makeText(context, "Please fill in all required fields.", Toast.LENGTH_SHORT).show();
+                if (firstErrorField != null) {
+                    firstErrorField.requestFocus();
+                }
+                return;
+            }
 
+            item.name = name;
+            item.category = category;
+            item.price = formatCurrencyInput(rawPrice);
+            item.cost = formatCurrencyInput(rawCost);
+
+            refreshTableUI();
+            dialog.dismiss();
             Toast.makeText(context, "Item updated successfully!", Toast.LENGTH_SHORT).show();
         });
-
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-        builder.show();
     }
 }
