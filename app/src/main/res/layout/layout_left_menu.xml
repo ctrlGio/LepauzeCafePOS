@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="280dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@color/white"
+    android:padding="16dp">
+
+    <!-- ==================== 1. HEADER / BRANDING ==================== -->
+    <ImageView
+        android:id="@+id/iv_menu_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitStart"
+        android:src="@drawable/temp_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_collapse_menu"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/bg_outlined_box"
+        android:contentDescription="Close menu"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/menu_barista_svg"
+        app:layout_constraintBottom_toBottomOf="@id/iv_menu_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_menu_logo"
+        app:tint="#6B7280" />
+
+    <View
+        android:id="@+id/divider_top"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="#E5E7EB"
+        app:layout_constraintTop_toBottomOf="@id/iv_menu_logo" />
+
+    <!-- ==================== 2. CASHIER PROFILE CARD ==================== -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/card_cashier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_outlined_box"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@id/divider_top">
+
+        <TextView
+            android:id="@+id/tv_cashier_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cashier"
+            android:textColor="#9CA3AF"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_cashier_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_outlined_box"
+            android:padding="8dp"
+            android:src="@drawable/baseline_person_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_cashier_label"
+            app:tint="#4B5563" />
+
+        <TextView
+            android:id="@+id/tv_cashier_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Broicad"
+            android:textColor="#111827"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/iv_dropdown_icon"
+            app:layout_constraintStart_toEndOf="@id/iv_cashier_avatar"
+            app:layout_constraintTop_toTopOf="@id/iv_cashier_avatar" />
+
+        <TextView
+            android:id="@+id/tv_cashier_shift"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="8dp"
+            android:text="10:00 Am - 22:00 Pm"
+            android:textColor="#6B7280"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@id/iv_dropdown_icon"
+            app:layout_constraintStart_toEndOf="@id/iv_cashier_avatar"
+            app:layout_constraintTop_toBottomOf="@id/tv_cashier_name" />
+
+        <ImageView
+            android:id="@+id/iv_dropdown_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/baseline_unfold_24"
+            app:layout_constraintBottom_toBottomOf="@id/iv_cashier_avatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_cashier_avatar"
+            app:tint="#4B5563" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- ==================== 3. NAVIGATION LIST ==================== -->
+
+    <!-- Cashier -->
+    <LinearLayout
+        android:id="@+id/nav_cashier"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        app:layout_constraintTop_toBottomOf="@id/card_cashier">
+
+        <ImageView
+            android:id="@+id/iv_nav_cashier"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_outlined_box"
+            android:padding="6dp"
+            android:src="@drawable/baseline_cafe_24"
+            app:tint="#9CA3AF" />
+
+        <TextView
+            android:id="@+id/tv_nav_cashier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Cashier"
+            android:textColor="#9CA3AF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- History -->
+    <LinearLayout
+        android:id="@+id/nav_history"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        app:layout_constraintTop_toBottomOf="@id/nav_cashier">
+
+        <ImageView
+            android:id="@+id/iv_nav_history"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_outlined_box"
+            android:padding="6dp"
+            android:src="@drawable/baseline_history_24"
+            app:tint="#9CA3AF" />
+
+        <TextView
+            android:id="@+id/tv_nav_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="History"
+            android:textColor="#9CA3AF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+
+    <!-- ==================== 4. FOOTER / LOGOUT ==================== -->
+    <LinearLayout
+        android:id="@+id/nav_logout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_outlined_box"
+            android:padding="6dp"
+            android:src="@drawable/baseline_logout_24"
+            app:tint="#F97316" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Log out"
+            android:textColor="#9CA3AF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
