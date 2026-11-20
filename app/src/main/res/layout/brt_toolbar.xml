@@ -9,9 +9,6 @@
     android:paddingTop="16dp"
     android:paddingBottom="16dp">
 
-    <!-- 2. Search Bar -->
-
-    <!-- 3. Far-Right "Close Order" Button -->
 
     <FrameLayout
         android:id="@+id/btn_menu_container"
@@ -34,27 +31,6 @@
             android:contentDescription="Menu icon"
             android:src="@drawable/menu_barista_svg" />
     </FrameLayout>
-
-    <EditText
-        android:id="@+id/search_bar"
-        android:layout_width="280dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="44dp"
-        android:background="@drawable/bg_outlined_box"
-        android:drawableStart="@drawable/baseline_search_24"
-        android:drawablePadding="10dp"
-        android:hint="Search"
-        android:inputType="text"
-        android:maxLines="1"
-        android:paddingStart="14dp"
-        android:paddingEnd="14dp"
-        android:textColor="#111827"
-        android:textColorHint="#9CA3AF"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn_menu_container"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
 
 
 
