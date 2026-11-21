@@ -1,494 +1,735 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/adminRootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EEE9DF">
 
-    <!-- Main Workspace Area -->
-    <FrameLayout
+    <!-- Main Admin Content Layer -->
+    <LinearLayout
+        android:id="@+id/mainAdminContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <!-- Top Header Bar -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="60dp"
+            android:background="#817060"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
 
-            <!-- Top Header Bar -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:background="#817060"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="24dp">
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnToggleSidebar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_hamburger_button"
+                android:contentDescription="Toggle Navigation Sidebar"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_menu"
+                app:tint="#1A1F17" />
 
-                <ImageButton
-                    android:id="@+id/btnToggleSidebar"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="16dp"
-                    android:padding="8dp"
-                    android:scaleType="fitCenter"
-                    android:background="@drawable/bg_hamburger_button"
-                    android:contentDescription="Toggle Navigation Sidebar"
-                    android:src="@drawable/ic_menu" />
-
-                <TextView
-                    android:id="@+id/tvHeaderTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="LePauze Coffee - Dashboard Overview"
-                    android:textColor="#FFFFFF"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <!-- Dashboard-->
-                <LinearLayout
-                    android:id="@+id/layoutDashboardContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="24dp"
-                    android:visibility="visible">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Welcome to Admin Dashboard"
-                        android:textColor="#1A1F17"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Menu -->
-                <LinearLayout
-                    android:id="@+id/layoutMenuContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="24dp"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp">
-
-                        <Button
-                            android:id="@+id/btnAddItem"
-                            android:layout_width="wrap_content"
-                            android:layout_height="44dp"
-                            android:backgroundTint="#16A34A"
-                            android:text="+ Add Menu Item"
-                            android:textAllCaps="false"
-                            android:textColor="#FFFFFF"
-                            android:textStyle="bold"
-                            android:layout_marginEnd="12dp" />
-
-                        <Button
-                            android:id="@+id/btnArchiveSelected"
-                            android:layout_width="wrap_content"
-                            android:layout_height="44dp"
-                            android:backgroundTint="#555555"
-                            android:text="Archive Selected"
-                            android:textAllCaps="false"
-                            android:textColor="#FFFFFF"
-                            android:textStyle="bold"
-                            android:layout_marginEnd="12dp" />
-
-                        <Button
-                            android:id="@+id/btnViewArchive"
-                            android:layout_width="wrap_content"
-                            android:layout_height="44dp"
-                            android:backgroundTint="#817060"
-                            android:text="View Archive"
-                            android:textAllCaps="false"
-                            android:textColor="#FFFFFF"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:background="#D6CEBE"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="16dp">
-
-                        <CheckBox
-                            android:id="@+id/headerCheckbox"
-                            android:layout_width="32dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.6"
-                            android:text="Item Name"
-                            android:textColor="#1A1F17"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.1"
-                            android:text="Category"
-                            android:textColor="#1A1F17"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.0"
-                            android:text="Price"
-                            android:textColor="#1A1F17"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.0"
-                            android:text="Cost"
-                            android:textColor="#1A1F17"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.9"
-                            android:text="Margin"
-                            android:textColor="#1A1F17"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="end"
-                            android:text="Actions"
-                            android:textColor="#1A1F17"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <ScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#FFFFFF">
-
-                        <LinearLayout
-                            android:id="@+id/menuItemsContainer"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" />
-                    </ScrollView>
-                </LinearLayout>
-
-                <!-- Sales-->
-                <LinearLayout
-                    android:id="@+id/layoutSalesContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="24dp"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sales Records &amp; Analytics"
-                        android:textColor="#1A1F17"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Employee -->
-                <LinearLayout
-                    android:id="@+id/layoutEmployeeContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="24dp"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Employee Directory &amp; Shifts"
-                        android:textColor="#1A1F17"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Customer -->
-                <LinearLayout
-                    android:id="@+id/layoutCustomerContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="24dp"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp">
-
-                        <Button
-                            android:id="@+id/btnAddCustomer"
-                            android:layout_width="wrap_content"
-                            android:layout_height="44dp"
-                            android:backgroundTint="#16A34A"
-                            android:text="+ Add Purchase Record"
-                            android:textAllCaps="false"
-                            android:textColor="#FFFFFF"
-                            android:textStyle="bold"
-                            android:layout_marginEnd="12dp" />
-
-                        <Button
-                            android:id="@+id/btnDeleteCustomerSelected"
-                            android:layout_width="wrap_content"
-                            android:layout_height="44dp"
-                            android:backgroundTint="#555555"
-                            android:text="Archive Selected"
-                            android:textAllCaps="false"
-                            android:textColor="#FFFFFF"
-                            android:textStyle="bold"
-                            android:layout_marginEnd="12dp" />
-
-                        <Button
-                            android:id="@+id/btnViewCustomerArchive"
-                            android:layout_width="wrap_content"
-                            android:layout_height="44dp"
-                            android:backgroundTint="#817060"
-                            android:text="View Archive"
-                            android:textAllCaps="false"
-                            android:textColor="#FFFFFF"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:background="#D6CEBE"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="16dp">
-
-                        <CheckBox
-                            android:id="@+id/custHeaderCheckbox"
-                            android:layout_width="32dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.6"
-                            android:text="Customer Name"
-                            android:textColor="#1A1F17"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.4"
-                            android:text="Served By"
-                            android:textColor="#1A1F17"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.3"
-                            android:text="Date"
-                            android:textColor="#1A1F17"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.6"
-                            android:text="Orders &amp; Qty"
-                            android:textColor="#1A1F17"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.0"
-                            android:text="Total Cost"
-                            android:textColor="#1A1F17"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="end"
-                            android:text="Actions"
-                            android:textColor="#1A1F17"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <ScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#FFFFFF">
-
-                        <LinearLayout
-                            android:id="@+id/customerItemsContainer"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" />
-                    </ScrollView>
-                </LinearLayout>
-
-            </FrameLayout>
+            <TextView
+                android:id="@+id/tvAdminHeaderTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_weight="1"
+                android:text="LePauze Coffee - Admin"
+                android:textColor="#EEE9DF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Dimming Backdrop Overlay -->
-        <View
-            android:id="@+id/sidebarDimOverlay"
+        <!-- Section Container -->
+        <FrameLayout
+            android:id="@+id/adminSectionContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0"
-            android:background="#99000000"
-            android:clickable="true"
-            android:focusable="true"
-            android:visibility="gone" />
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-    </FrameLayout>
+            <!-- Blank Dashboard Section -->
+            <LinearLayout
+                android:id="@+id/layoutDashboardContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#EEE9DF"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:visibility="gone" />
 
-    <!-- Collapsible Overlay Sidebar (Hidden by default) -->
+            <!-- Menu Management Section -->
+            <LinearLayout
+                android:id="@+id/layoutMenuContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#EEE9DF"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnAddItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_marginEnd="12dp"
+                        android:backgroundTint="#16A34A"
+                        android:text="+ Add Menu Item"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnArchiveSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_marginEnd="12dp"
+                        android:backgroundTint="#555555"
+                        android:text="Archive Selected"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnViewArchive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:backgroundTint="#817060"
+                        android:text="View Archive"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="#C9C1B1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp">
+
+                    <CheckBox
+                        android:id="@+id/headerCheckbox"
+                        android:layout_width="32dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.6"
+                        android:text="Item Name"
+                        android:textColor="#1A1F17"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.1"
+                        android:text="Category"
+                        android:textColor="#1A1F17"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:text="Price"
+                        android:textColor="#1A1F17"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:text="Cost"
+                        android:textColor="#1A1F17"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.9"
+                        android:text="Margin"
+                        android:textColor="#1A1F17"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="Actions"
+                        android:textColor="#1A1F17"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF">
+
+                    <LinearLayout
+                        android:id="@+id/menuItemsContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+                </ScrollView>
+            </LinearLayout>
+
+            <!-- Customer Records Section -->
+            <LinearLayout
+                android:id="@+id/layoutCustomerContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#EEE9DF"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnAddCustomer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_marginEnd="12dp"
+                        android:backgroundTint="#16A34A"
+                        android:text="+ Add Purchase Record"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnDeleteCustomerSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_marginEnd="12dp"
+                        android:backgroundTint="#555555"
+                        android:text="Archive Selected"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnViewCustomerArchive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:backgroundTint="#817060"
+                        android:text="View Archive"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="#C9C1B1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp">
+
+                    <CheckBox
+                        android:id="@+id/custHeaderCheckbox"
+                        android:layout_width="32dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.6"
+                        android:text="Customer Name"
+                        android:textColor="#1A1F17"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.4"
+                        android:text="Served By"
+                        android:textColor="#1A1F17"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.3"
+                        android:text="Date"
+                        android:textColor="#1A1F17"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.6"
+                        android:text="Orders"
+                        android:textColor="#1A1F17"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:text="Total"
+                        android:textColor="#1A1F17"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="Actions"
+                        android:textColor="#1A1F17"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF">
+
+                    <LinearLayout
+                        android:id="@+id/customerItemsContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+                </ScrollView>
+            </LinearLayout>
+
+            <!-- Employee Directory Section -->
+            <LinearLayout
+                android:id="@+id/layoutEmployeeContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#EEE9DF"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Employees"
+                            android:textColor="#1A1F17"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Your employee, shift start/end times, and who is on duty."
+                            android:textColor="#817060"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnInviteEmployee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:backgroundTint="#16A34A"
+                        android:paddingHorizontal="18dp"
+                        android:text="+ Invite employee"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Employee | Hours -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_emp_tab_container"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:id="@+id/tvEmpTabTeam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:minWidth="92dp"
+                        android:paddingHorizontal="18dp"
+                        android:paddingVertical="8dp"
+                        android:text="Employee"
+                        android:textColor="#EEE9DF"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvEmpTabHours"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:minWidth="92dp"
+                        android:paddingHorizontal="18dp"
+                        android:paddingVertical="8dp"
+                        android:text="Hours"
+                        android:textColor="#1A1F17"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal">
+
+                    <!-- On Duty Now -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:layout_weight="1"
+                        android:background="#FFFFFF"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="14dp">
+
+                        <FrameLayout
+                            android:id="@+id/iconEmpOnDuty"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_marginEnd="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="On duty now"
+                                android:textColor="#817060"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tvEmpOnDutyCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#1A1F17"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Hours Today -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:layout_weight="1"
+                        android:background="#FFFFFF"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="14dp">
+
+                        <FrameLayout
+                            android:id="@+id/iconEmpHoursToday"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_marginEnd="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hours today"
+                                android:textColor="#817060"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tvEmpHoursToday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0h 0m"
+                                android:textColor="#1A1F17"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Ended Shifts -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#FFFFFF"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="14dp">
+
+                        <FrameLayout
+                            android:id="@+id/iconEmpEndedShifts"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_marginEnd="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ended shifts"
+                                android:textColor="#817060"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tvEmpEndedCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#1A1F17"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Main Table Card Container -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="16dp">
+
+                        <TextView
+                            android:id="@+id/tvEmpSectionTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Team"
+                            android:textColor="#1A1F17"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvEmpSectionCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 people"
+                            android:textColor="#817060"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/employeeHeaderRow"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="#C9C1B1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="16dp" />
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:id="@+id/employeeItemsContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" />
+                    </ScrollView>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Sales Records Section -->
+            <LinearLayout
+                android:id="@+id/layoutSalesContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#EEE9DF"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sales Records"
+                    android:textColor="#1A1F17"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Daily and weekly revenue reports for LePauze Coffee."
+                    android:textColor="#817060"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/sidebarDimOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone" />
+
     <LinearLayout
-        android:id="@+id/sidebarContainer"
+        android:id="@+id/adminSidebar"
         android:layout_width="250dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
         android:background="#1A1F17"
         android:clickable="true"
-        android:elevation="8dp"
+        android:elevation="16dp"
         android:focusable="true"
         android:orientation="vertical"
-        android:padding="16dp"
+        android:padding="20dp"
+        android:translationX="-250dp"
         android:visibility="gone">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Admin"
-            android:textColor="#FFFFFF"
+            android:layout_marginBottom="24dp"
+            android:text="LePauze Admin"
+            android:textColor="#EEE9DF"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginBottom="24dp" />
+            android:textStyle="bold" />
 
-        <!-- Sidebar Navigation Buttons -->
-        <Button
-            android:id="@+id/btnDashboard"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnNavDashboard"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="46dp"
             android:layout_marginBottom="8dp"
-            android:backgroundTint="#2A3126"
             android:gravity="start|center_vertical"
-            android:paddingStart="16dp"
+            android:paddingHorizontal="14dp"
             android:text="Dashboard"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp" />
+            android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btnMenu"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnNavMenu"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="46dp"
             android:layout_marginBottom="8dp"
-            android:backgroundTint="#2A3126"
             android:gravity="start|center_vertical"
-            android:paddingStart="16dp"
+            android:paddingHorizontal="14dp"
             android:text="Menu Management"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp" />
+            android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btnSales"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnNavCustomers"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="46dp"
             android:layout_marginBottom="8dp"
-            android:backgroundTint="#2A3126"
             android:gravity="start|center_vertical"
-            android:paddingStart="16dp"
-            android:text="Sales Records"
+            android:paddingHorizontal="14dp"
+            android:text="Customer Records"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp" />
+            android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btnEmployee"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnNavEmployees"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="46dp"
             android:layout_marginBottom="8dp"
-            android:backgroundTint="#2A3126"
             android:gravity="start|center_vertical"
-            android:paddingStart="16dp"
+            android:paddingHorizontal="14dp"
             android:text="Employee Directory"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp" />
+            android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btnCustomer"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnNavSales"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:backgroundTint="#2A3126"
+            android:layout_height="46dp"
             android:gravity="start|center_vertical"
-            android:paddingStart="16dp"
-            android:text="Customer Base"
+            android:paddingHorizontal="14dp"
+            android:text="Sales Records"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp" />
+            android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <!-- Logout Button -->
-        <Button
-            android:id="@+id/btnLogout"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAdminLogout"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="46dp"
             android:backgroundTint="#EA2A2A"
-            android:gravity="start|center_vertical"
-            android:paddingStart="16dp"
-            android:text="Logout"
+            android:text="Log Out"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="15sp"
             android:textStyle="bold" />
-
     </LinearLayout>
-
 </FrameLayout>

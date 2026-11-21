@@ -1,243 +1,226 @@
 package com.example.lepauzecafepos;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AdminActivity extends AppCompatActivity {
 
-    private static final long SIDEBAR_ANIM_DURATION_MS = 220L;
-    private static final int DEFAULT_SIDEBAR_WIDTH_DP = 250;
+    private static final float SIDEBAR_WIDTH_DP = 250f;
+    private static final int COLOR_EERIE_BLACK = Color.parseColor("#1A1F17");
+    private static final int COLOR_MOCHA_LATTE = Color.parseColor("#817060");
+    private static final int COLOR_OATMEAL = Color.parseColor("#C9C1B1");
+    private static final int COLOR_PALLADIAN = Color.parseColor("#EEE9DF");
 
-    Button btnDashboard, btnMenu, btnSales, btnEmployee, btnCustomer, btnLogout;
-    ImageButton btnToggleSidebar;
-    LinearLayout sidebarContainer;
-    View sidebarDimOverlay;
-    LinearLayout layoutDashboard, layoutMenu, layoutSales, layoutEmployee, layoutCustomer;
-    TextView tvHeaderTitle;
+    private View sidebarDimOverlay;
+    private LinearLayout sidebarContainer;
+    private ImageButton btnToggleSidebar;
+    private TextView tvHeaderTitle;
 
-    MenuManager menuManager;
-    CustomerManager customerManager;
+    private Button btnDashboard, btnMenu, btnSales, btnEmployee, btnCustomer, btnLogout;
+    private View layoutDashboardContent, layoutMenuContent, layoutSalesContent, layoutEmployeeContent, layoutCustomerContent;
 
-    private boolean isSidebarAnimating = false;
+    private MenuManager menuManager;
+    private CustomerManager customerManager;
+    private EmployeeManager employeeManager;
+
+    private boolean isSidebarOpen = false;
+    private float sidebarWidthPx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        // Bind Sidebar & Header Controls
-        sidebarContainer = findViewById(R.id.sidebarContainer);
+        sidebarWidthPx = SIDEBAR_WIDTH_DP * getResources().getDisplayMetrics().density;
+
+        View rootView = findViewById(android.R.id.content);
         sidebarDimOverlay = findViewById(R.id.sidebarDimOverlay);
+        sidebarContainer = findViewById(R.id.adminSidebar);
         btnToggleSidebar = findViewById(R.id.btnToggleSidebar);
-        tvHeaderTitle = findViewById(R.id.tvHeaderTitle);
+        tvHeaderTitle = findViewById(R.id.tvAdminHeaderTitle);
 
-        // Bind Sidebar Navigation Buttons
-        btnDashboard = findViewById(R.id.btnDashboard);
-        btnMenu = findViewById(R.id.btnMenu);
-        btnSales = findViewById(R.id.btnSales);
-        btnEmployee = findViewById(R.id.btnEmployee);
-        btnCustomer = findViewById(R.id.btnCustomer);
-        btnLogout = findViewById(R.id.btnLogout);
+        btnDashboard = findViewById(R.id.btnNavDashboard);
+        btnMenu = findViewById(R.id.btnNavMenu);
+        btnSales = findViewById(R.id.btnNavSales);
+        btnEmployee = findViewById(R.id.btnNavEmployees);
+        btnCustomer = findViewById(R.id.btnNavCustomers);
+        btnLogout = findViewById(R.id.btnAdminLogout);
 
-        // Bind Workspace Layouts
-        layoutDashboard = findViewById(R.id.layoutDashboardContent);
-        layoutMenu = findViewById(R.id.layoutMenuContent);
-        layoutSales = findViewById(R.id.layoutSalesContent);
-        layoutEmployee = findViewById(R.id.layoutEmployeeContent);
-        layoutCustomer = findViewById(R.id.layoutCustomerContent);
+        layoutDashboardContent = findViewById(R.id.layoutDashboardContent);
+        layoutMenuContent = findViewById(R.id.layoutMenuContent);
+        layoutSalesContent = findViewById(R.id.layoutSalesContent);
+        layoutEmployeeContent = findViewById(R.id.layoutEmployeeContent);
+        layoutCustomerContent = findViewById(R.id.layoutCustomerContent);
 
         if (sidebarContainer != null) {
+            sidebarContainer.setTranslationX(-sidebarWidthPx);
             sidebarContainer.setVisibility(View.GONE);
         }
-
         if (sidebarDimOverlay != null) {
-            sidebarDimOverlay.setAlpha(0f);
             sidebarDimOverlay.setVisibility(View.GONE);
-            sidebarDimOverlay.setOnClickListener(v -> closeSidebar(true));
+            sidebarDimOverlay.setOnClickListener(v -> closeSidebar());
         }
-
         if (btnToggleSidebar != null) {
-            btnToggleSidebar.setOnClickListener(v -> toggleSidebar());
-        }
-
-        // Initialize Managers
-        View rootView = findViewById(android.R.id.content);
-        menuManager = new MenuManager(this, rootView);
-        customerManager = new CustomerManager(this, rootView);
-
-        // Navigation Listeners for Tabs
-        if (btnDashboard != null) {
-            btnDashboard.setOnClickListener(v -> switchTab(layoutDashboard, btnDashboard, "Dashboard Overview"));
-        }
-        if (btnMenu != null) {
-            btnMenu.setOnClickListener(v -> switchTab(layoutMenu, btnMenu, "Menu Management"));
-        }
-        if (btnSales != null) {
-            btnSales.setOnClickListener(v -> switchTab(layoutSales, btnSales, "Sales Records"));
-        }
-        if (btnEmployee != null) {
-            btnEmployee.setOnClickListener(v -> switchTab(layoutEmployee, btnEmployee, "Employee Directory"));
-        }
-        if (btnCustomer != null) {
-            btnCustomer.setOnClickListener(v -> switchTab(layoutCustomer, btnCustomer, "Customer Kiosk"));
-        }
-        if (btnLogout != null) {
-            btnLogout.setOnClickListener(v -> {
-                closeSidebar(false);
-                finish();
+            btnToggleSidebar.setOnClickListener(v -> {
+                if (isSidebarOpen) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
             });
         }
 
-        // Default Startup Tab (without animating sidebar open)
-        switchTab(layoutDashboard, btnDashboard, "Dashboard Overview", false);
+        menuManager = new MenuManager(this, rootView);
+        customerManager = new CustomerManager(this, rootView);
+        employeeManager = new EmployeeManager(this, rootView);
+
+        setupNavigationListeners();
+        showSection("dashboard");
     }
 
-    private int getSidebarWidthPx() {
-        if (sidebarContainer != null && sidebarContainer.getWidth() > 0) {
-            return sidebarContainer.getWidth();
+    private void setupNavigationListeners() {
+        if (btnDashboard != null) {
+            btnDashboard.setOnClickListener(v -> {
+                showSection("dashboard");
+                closeSidebar();
+            });
         }
-        return (int) (DEFAULT_SIDEBAR_WIDTH_DP * getResources().getDisplayMetrics().density);
+        if (btnMenu != null) {
+            btnMenu.setOnClickListener(v -> {
+                showSection("menu");
+                closeSidebar();
+            });
+        }
+        if (btnCustomer != null) {
+            btnCustomer.setOnClickListener(v -> {
+                showSection("customer");
+                closeSidebar();
+            });
+        }
+        if (btnEmployee != null) {
+            btnEmployee.setOnClickListener(v -> {
+                showSection("employee");
+                closeSidebar();
+            });
+        }
+        if (btnSales != null) {
+            btnSales.setOnClickListener(v -> {
+                showSection("sales");
+                closeSidebar();
+            });
+        }
+        if (btnLogout != null) {
+            btnLogout.setOnClickListener(v -> {
+                closeSidebar();
+                Toast.makeText(this, "Logged out of admin workspace.", Toast.LENGTH_SHORT).show();
+                finish();
+            });
+        }
     }
 
-    private void toggleSidebar() {
-        if (sidebarContainer == null || isSidebarAnimating) return;
-
-        if (sidebarContainer.getVisibility() == View.VISIBLE) {
-            closeSidebar(true);
-        } else {
-            openSidebar();
+    private void showSection(String section) {
+        if (layoutDashboardContent != null) {
+            layoutDashboardContent.setVisibility("dashboard".equals(section) ? View.VISIBLE : View.GONE);
         }
+        if (layoutMenuContent != null) {
+            layoutMenuContent.setVisibility("menu".equals(section) ? View.VISIBLE : View.GONE);
+        }
+        if (layoutCustomerContent != null) {
+            layoutCustomerContent.setVisibility("customer".equals(section) ? View.VISIBLE : View.GONE);
+        }
+        if (layoutEmployeeContent != null) {
+            layoutEmployeeContent.setVisibility("employee".equals(section) ? View.VISIBLE : View.GONE);
+        }
+        if (layoutSalesContent != null) {
+            layoutSalesContent.setVisibility("sales".equals(section) ? View.VISIBLE : View.GONE);
+        }
+
+        if (tvHeaderTitle != null) {
+            switch (section) {
+                case "menu":
+                    tvHeaderTitle.setText("LePauze Coffee - Menu Management");
+                    break;
+                case "customer":
+                    tvHeaderTitle.setText("LePauze Coffee - Customer Records");
+                    break;
+                case "employee":
+                    tvHeaderTitle.setText("LePauze Coffee - Employee Directory");
+                    break;
+                case "sales":
+                    tvHeaderTitle.setText("LePauze Coffee - Sales Records");
+                    break;
+                case "dashboard":
+                default:
+                    tvHeaderTitle.setText("LePauze Coffee - Dashboard");
+                    break;
+            }
+        }
+
+        updateNavButtonStyles(section);
+    }
+
+    private void updateNavButtonStyles(String activeSection) {
+        styleNavButton(btnDashboard, "dashboard".equals(activeSection));
+        styleNavButton(btnMenu, "menu".equals(activeSection));
+        styleNavButton(btnCustomer, "customer".equals(activeSection));
+        styleNavButton(btnEmployee, "employee".equals(activeSection));
+        styleNavButton(btnSales, "sales".equals(activeSection));
+    }
+
+    private void styleNavButton(Button button, boolean active) {
+        if (button == null) return;
+
+        GradientDrawable bg = new GradientDrawable();
+        bg.setShape(GradientDrawable.RECTANGLE);
+        bg.setCornerRadius(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                8f,
+                getResources().getDisplayMetrics()
+        ));
+        bg.setColor(active ? COLOR_MOCHA_LATTE : COLOR_EERIE_BLACK);
+
+        button.setBackground(bg);
+        button.setBackgroundTintList(null);
+        button.setTextColor(active ? COLOR_PALLADIAN : COLOR_OATMEAL);
     }
 
     private void openSidebar() {
         if (sidebarContainer == null) return;
-
-        isSidebarAnimating = true;
-        sidebarContainer.animate().cancel();
-        sidebarContainer.clearAnimation();
-
-        int width = getSidebarWidthPx();
-        sidebarContainer.setTranslationX(-width);
-        sidebarContainer.setVisibility(View.VISIBLE);
-        sidebarContainer.bringToFront();
-
+        isSidebarOpen = true;
         if (sidebarDimOverlay != null) {
-            sidebarDimOverlay.animate().cancel();
-            sidebarDimOverlay.clearAnimation();
-            sidebarDimOverlay.setAlpha(0f);
             sidebarDimOverlay.setVisibility(View.VISIBLE);
-            sidebarDimOverlay.animate()
-                    .alpha(1f)
-                    .setDuration(SIDEBAR_ANIM_DURATION_MS)
-                    .setListener(null)
-                    .start();
+            sidebarDimOverlay.setAlpha(0f);
+            sidebarDimOverlay.animate().alpha(1f).setDuration(200).start();
         }
-
-        sidebarContainer.animate()
-                .translationX(0f)
-                .setDuration(SIDEBAR_ANIM_DURATION_MS)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        sidebarContainer.setTranslationX(0f);
-                        isSidebarAnimating = false;
-                    }
-                })
-                .start();
+        sidebarContainer.setVisibility(View.VISIBLE);
+        sidebarContainer.animate().translationX(0f).setDuration(220).start();
     }
 
-    private void closeSidebar(boolean animate) {
+    private void closeSidebar() {
         if (sidebarContainer == null) return;
-
-        if (!animate || sidebarContainer.getVisibility() != View.VISIBLE) {
-            sidebarContainer.animate().cancel();
-            sidebarContainer.clearAnimation();
-            sidebarContainer.setTranslationX(0f);
-            sidebarContainer.setVisibility(View.GONE);
-
-            if (sidebarDimOverlay != null) {
-                sidebarDimOverlay.animate().cancel();
-                sidebarDimOverlay.clearAnimation();
-                sidebarDimOverlay.setAlpha(0f);
-                sidebarDimOverlay.setVisibility(View.GONE);
-            }
-
-            isSidebarAnimating = false;
-            return;
-        }
-
-        isSidebarAnimating = true;
-        int width = getSidebarWidthPx();
-
+        isSidebarOpen = false;
         if (sidebarDimOverlay != null) {
-            sidebarDimOverlay.animate().cancel();
-            sidebarDimOverlay.clearAnimation();
-            sidebarDimOverlay.setAlpha(1f);
-            sidebarDimOverlay.setVisibility(View.VISIBLE);
             sidebarDimOverlay.animate()
                     .alpha(0f)
-                    .setDuration(SIDEBAR_ANIM_DURATION_MS)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            sidebarDimOverlay.setAlpha(0f);
-                            sidebarDimOverlay.setVisibility(View.GONE);
-                        }
-                    })
+                    .setDuration(180)
+                    .withEndAction(() -> sidebarDimOverlay.setVisibility(View.GONE))
                     .start();
         }
-
         sidebarContainer.animate()
-                .translationX(-width)
-                .setDuration(SIDEBAR_ANIM_DURATION_MS)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        sidebarContainer.setVisibility(View.GONE);
-                        sidebarContainer.setTranslationX(0f);
-                        isSidebarAnimating = false;
-                    }
-                })
+                .translationX(-sidebarWidthPx)
+                .setDuration(200)
+                .withEndAction(() -> sidebarContainer.setVisibility(View.GONE))
                 .start();
-    }
-
-    private void switchTab(View activeLayout, Button activeButton, String title) {
-        switchTab(activeLayout, activeButton, title, true);
-    }
-
-    private void switchTab(View activeLayout, Button activeButton, String title, boolean animateClose) {
-        if (layoutDashboard != null) layoutDashboard.setVisibility(View.GONE);
-        if (layoutMenu != null) layoutMenu.setVisibility(View.GONE);
-        if (layoutSales != null) layoutSales.setVisibility(View.GONE);
-        if (layoutEmployee != null) layoutEmployee.setVisibility(View.GONE);
-        if (layoutCustomer != null) layoutCustomer.setVisibility(View.GONE);
-
-        if (activeLayout != null) {
-            activeLayout.setVisibility(View.VISIBLE);
-        }
-        if (tvHeaderTitle != null) {
-            tvHeaderTitle.setText("LePauze Coffee - " + title);
-        }
-
-        int inactiveColor = Color.parseColor("#2A3126");
-        if (btnDashboard != null) btnDashboard.setBackgroundColor(inactiveColor);
-        if (btnMenu != null) btnMenu.setBackgroundColor(inactiveColor);
-        if (btnSales != null) btnSales.setBackgroundColor(inactiveColor);
-        if (btnEmployee != null) btnEmployee.setBackgroundColor(inactiveColor);
-        if (btnCustomer != null) btnCustomer.setBackgroundColor(inactiveColor);
-
-        if (activeButton != null) {
-            activeButton.setBackgroundColor(Color.parseColor("#16A34A"));
-        }
-
-        closeSidebar(animateClose);
     }
 }
