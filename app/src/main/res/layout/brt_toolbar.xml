@@ -5,10 +5,9 @@
     android:layout_height="wrap_content"
     android:background="#F8F9FA"
     android:paddingStart="20dp"
-    android:paddingEnd="20dp"
     android:paddingTop="16dp"
+    android:paddingEnd="20dp"
     android:paddingBottom="16dp">
-
 
     <FrameLayout
         android:id="@+id/btn_menu_container"
@@ -18,10 +17,9 @@
         android:background="@drawable/bg_outlined_box"
         android:clickable="true"
         android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/pill_shift_status"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="@id/pill_shift_status">
 
         <ImageView
             android:id="@+id/menu_icon"
@@ -32,6 +30,80 @@
             android:src="@drawable/menu_barista_svg" />
     </FrameLayout>
 
+    <!-- Shift Status Pill extended to the right edge -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/pill_shift_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/bg_shift_pill"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingStart="14dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_menu_container"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/iv_shift_indicator"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_shift_active_dot"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_shift_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Shift active"
+            android:textColor="#15803D"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tv_shift_details"
+            app:layout_constraintEnd_toStartOf="@id/iv_shift_chevron"
+            app:layout_constraintStart_toEndOf="@id/iv_shift_indicator"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tv_shift_details"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Started 6:50 AM · Opening cash ₱0.00"
+            android:textColor="#4B5563"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_shift_chevron"
+            app:layout_constraintStart_toStartOf="@id/tv_shift_status"
+            app:layout_constraintTop_toBottomOf="@id/tv_shift_status" />
+
+        <ImageView
+            android:id="@+id/iv_shift_chevron"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@null"
+            android:src="@drawable/baseline_chevron_right_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#374151" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
