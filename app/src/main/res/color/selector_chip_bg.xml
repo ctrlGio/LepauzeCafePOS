@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Soft pale green fill when selected -->
+    <item android:color="#ECFDF5" android:state_checked="true" />
+    <!-- Default white surface -->
+    <item android:color="#FFFFFF" />
+</selector>

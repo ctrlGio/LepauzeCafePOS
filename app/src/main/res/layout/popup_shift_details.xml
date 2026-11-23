@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="310dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_popover_card"
+    android:elevation="8dp"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- 1. Header & Cashier Info -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shift"
+        android:textColor="#6B7280"
+        android:textSize="11sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="+@id/tv_popup_cashier_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Demo Owner"
+        android:textColor="#111827"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_popup_cashier_role"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="Owner"
+        android:textColor="#6B7280"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/view_popup_status_dot"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:background="@drawable/ic_shift_active_dot" />
+
+        <TextView
+            android:id="@+id/tv_popup_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="Active"
+            android:textColor="#15803D"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- 2. Shift Metrics List -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical">
+
+        <!-- Started -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="3dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Started"
+                android:textColor="#4B5563"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tv_popup_started"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6:50 AM"
+                android:textColor="#111827"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Duration -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="3dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Duration"
+                android:textColor="#4B5563"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tv_popup_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9h 55m"
+                android:textColor="#111827"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Opening cash -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="3dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Opening cash"
+                android:textColor="#4B5563"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tv_popup_opening_cash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₱0.00"
+                android:textColor="#111827"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Current sales -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="3dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Current sales"
+                android:textColor="#4B5563"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tv_popup_current_sales"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₱7,376.50"
+                android:textColor="#111827"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Transactions -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="3dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Transactions"
+                android:textColor="#4B5563"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tv_popup_transactions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="23"
+                android:textColor="#111827"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Cash sales -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="3dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cash sales"
+                android:textColor="#4B5563"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tv_popup_cash_sales"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₱4,253.00"
+                android:textColor="#111827"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Cash in -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="3dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cash in"
+                android:textColor="#4B5563"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tv_popup_cash_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₱0.00"
+                android:textColor="#111827"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Cash out -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="3dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cash out"
+                android:textColor="#4B5563"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tv_popup_cash_out"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₱0.00"
+                android:textColor="#111827"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Expenses -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="3dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Expenses"
+                android:textColor="#4B5563"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tv_popup_expenses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₱0.00"
+                android:textColor="#111827"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 3. Expected Cash Divider & Total -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="10dp"
+        android:background="#E5E7EB" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Expected cash in the drawer"
+            android:textColor="#111827"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_popup_expected_cash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="₱4,253.00"
+            android:textColor="#111827"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- 4. Quick Drawer Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/btn_popup_cash_in"
+            android:layout_width="0dp"
+            android:layout_height="34dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_outlined_box"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="Cash in"
+            android:textColor="#111827"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btn_popup_cash_out"
+            android:layout_width="0dp"
+            android:layout_height="34dp"
+            android:layout_marginHorizontal="6dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_outlined_box"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="Cash out"
+            android:textColor="#111827"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btn_popup_add_expense"
+            android:layout_width="0dp"
+            android:layout_height="34dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_outlined_box"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="Add expense"
+            android:textColor="#111827"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- 5. Footer Links -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/btn_popup_view_shift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingVertical="4dp"
+            android:text="View shift"
+            android:textColor="#15803D"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/btn_popup_end_shift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingVertical="4dp"
+            android:text="End shift"
+            android:textColor="#DC2626"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>
