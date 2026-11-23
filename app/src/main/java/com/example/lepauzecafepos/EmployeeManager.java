@@ -143,7 +143,7 @@ public class EmployeeManager {
                 "42h 15m"
         ));
         employees.add(new EmployeeShiftRecord(
-                "Gian Reyes",
+                "Gian Tuzon",
                 "Barista",
                 "8:00 AM",
                 "2:00 PM",
@@ -154,8 +154,8 @@ public class EmployeeManager {
                 "Aron John",
                 "Barista",
                 "1:00 PM",
-                null,
-                "2h 44m",
+                "7:00 PM",
+                "6h 00m",
                 "24h 10m"
         ));
     }

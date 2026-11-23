@@ -121,6 +121,12 @@ public class CustomerManager {
         List<OrderItem> order2 = new ArrayList<>();
         order2.add(new OrderItem("Caramel Macchiato", 1));
         activeRecords.add(new CustomerRecord("Aron John Returan", "Barista Gian", "Nov 16, 2026", order2, "₱155.00"));
+
+        List<OrderItem> order3 = new ArrayList<>();
+        order2.add(new OrderItem("Iced Americano", 1));
+        order2.add(new OrderItem("Butter Croissant", 2));
+        activeRecords.add(new CustomerRecord("Ryan Regalario", "Barista Aron", "Nov 16, 2026", order2, "₱155.00"));
+
     }
     // hanggang dito sa line na to para mawala sample items
 

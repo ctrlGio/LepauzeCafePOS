@@ -1,6 +1,5 @@
 package com.example.lepauzecafepos;
 
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -33,6 +32,8 @@ public class AdminActivity extends AppCompatActivity {
     private MenuManager menuManager;
     private CustomerManager customerManager;
     private EmployeeManager employeeManager;
+    private SalesManager salesManager;
+    private DashboardManager dashboardManager;
 
     private boolean isSidebarOpen = false;
     private float sidebarWidthPx;
@@ -84,6 +85,8 @@ public class AdminActivity extends AppCompatActivity {
         menuManager = new MenuManager(this, rootView);
         customerManager = new CustomerManager(this, rootView);
         employeeManager = new EmployeeManager(this, rootView);
+        salesManager = new SalesManager(this, rootView);
+        dashboardManager = new DashboardManager(this, rootView);
 
         setupNavigationListeners();
         showSection("dashboard");
@@ -144,6 +147,10 @@ public class AdminActivity extends AppCompatActivity {
         }
         if (layoutSalesContent != null) {
             layoutSalesContent.setVisibility("sales".equals(section) ? View.VISIBLE : View.GONE);
+        }
+
+        if ("sales".equals(section) && salesManager != null) {
+            salesManager.refreshAll();
         }
 
         if (tvHeaderTitle != null) {
