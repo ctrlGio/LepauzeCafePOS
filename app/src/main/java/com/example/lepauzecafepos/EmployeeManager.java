@@ -8,9 +8,11 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,10 @@ public class EmployeeManager {
     private final FrameLayout iconEmpOnDuty, iconEmpHoursToday, iconEmpEndedShifts;
     private final TextView tvEmpOnDutyCount, tvEmpHoursToday, tvEmpEndedCount;
     private final TextView tvEmpSectionTitle, tvEmpSectionCount;
+    private final LinearLayout cardInviteEmployee;
+    private final EditText etInviteName;
+    private final EditText etInviteEmail;
+    private final Button btnSubmitInviteEmployee;
 
     private final List<EmployeeShiftRecord> employees = new ArrayList<>();
     private boolean isHoursTabSelected = false;
@@ -87,8 +93,20 @@ public class EmployeeManager {
         tvEmpSectionTitle = rootView.findViewById(R.id.tvEmpSectionTitle);
         tvEmpSectionCount = rootView.findViewById(R.id.tvEmpSectionCount);
 
+        cardInviteEmployee = rootView.findViewById(R.id.cardInviteEmployee);
+        etInviteName = rootView.findViewById(R.id.etInviteName);
+        etInviteEmail = rootView.findViewById(R.id.etInviteEmail);
+        btnSubmitInviteEmployee = rootView.findViewById(R.id.btnSubmitInviteEmployee);
+
+        styleInputField(etInviteName);
+        styleInputField(etInviteEmail);
+
         if (btnInviteEmployee != null) {
-            btnInviteEmployee.setOnClickListener(null);
+            btnInviteEmployee.setOnClickListener(v -> toggleInviteCard());
+        }
+
+        if (btnSubmitInviteEmployee != null) {
+            btnSubmitInviteEmployee.setOnClickListener(v -> handleInviteSubmit());
         }
 
         if (tvEmpTabTeam != null) {
@@ -102,6 +120,62 @@ public class EmployeeManager {
         setupSummaryCardIcons();
         seedInitialEmployees();
         selectTab(false);
+    }
+
+    private void styleInputField(EditText input) {
+        if (input == null) return;
+        GradientDrawable bg = new GradientDrawable();
+        bg.setShape(GradientDrawable.RECTANGLE);
+        bg.setCornerRadius(dpToPx(8));
+        bg.setColor(Color.WHITE);
+        bg.setStroke(dpToPx(1), COLOR_OATMEAL);
+        input.setBackground(bg);
+    }
+
+    private void toggleInviteCard() {
+        if (cardInviteEmployee == null) return;
+        boolean show = cardInviteEmployee.getVisibility() != View.VISIBLE;
+        cardInviteEmployee.setVisibility(show ? View.VISIBLE : View.GONE);
+        if (show && etInviteName != null) {
+            etInviteName.requestFocus();
+        }
+    }
+
+    private void handleInviteSubmit() {
+        String name = etInviteName != null ? etInviteName.getText().toString().trim() : "";
+        String email = etInviteEmail != null ? etInviteEmail.getText().toString().trim() : "";
+
+        if (name.isEmpty()) {
+            if (etInviteName != null) etInviteName.setError("Enter employee name");
+            return;
+        }
+        if (email.isEmpty() || !email.contains("@")) {
+            if (etInviteEmail != null) etInviteEmail.setError("Enter a valid email");
+            return;
+        }
+
+        employees.add(new EmployeeShiftRecord(
+                name,
+                "Barista",
+                "Now",
+                null,
+                "0h 0m",
+                "0h 0m"
+        ));
+
+        if (etInviteName != null) etInviteName.setText("");
+        if (etInviteEmail != null) etInviteEmail.setText("");
+        if (cardInviteEmployee != null) cardInviteEmployee.setVisibility(View.GONE);
+
+        updateTabStyles();
+        updateSummaryCards();
+        refreshTable();
+
+        Toast.makeText(
+                context,
+                "Invited " + name + " (" + email + ") as Barista",
+                Toast.LENGTH_SHORT
+        ).show();
     }
 
     private void setupSummaryCardIcons() {

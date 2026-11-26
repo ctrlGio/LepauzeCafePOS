@@ -383,6 +383,102 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
+                <!-- Inline Invite Employee Card (Properly placed above Employee | Hours tabs) -->
+                <LinearLayout
+                    android:id="@+id/cardInviteEmployee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_invite_card"
+                    android:orientation="vertical"
+                    android:padding="18dp"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- Name Field -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="14dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="6dp"
+                                android:text="Name"
+                                android:textColor="#1A1F17"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etInviteName"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:hint="Full name"
+                                android:inputType="textPersonName|textCapWords"
+                                android:paddingHorizontal="12dp"
+                                android:textColor="#1A1F17"
+                                android:textColorHint="#817060"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <!-- Email Field -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="6dp"
+                                android:text="Email"
+                                android:textColor="#1A1F17"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etInviteEmail"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:hint="employee@business.ph"
+                                android:inputType="textEmailAddress"
+                                android:paddingHorizontal="12dp"
+                                android:textColor="#1A1F17"
+                                android:textColorHint="#817060"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnSubmitInviteEmployee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="14dp"
+                        android:backgroundTint="#16A34A"
+                        android:paddingHorizontal="20dp"
+                        android:text="Invite employee"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="The employee sets their own password from the login screen's &quot;Been invited?&quot; link — you never see or set it."
+                        android:textColor="#817060"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
                 <!-- Employee | Hours -->
                 <LinearLayout
                     android:layout_width="wrap_content"

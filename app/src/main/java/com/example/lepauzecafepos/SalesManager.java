@@ -1,7 +1,9 @@
 package com.example.lepauzecafepos;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,15 +11,21 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Environment;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -307,9 +315,167 @@ public class SalesManager {
         }
 
         if (btnExportSalesReport != null) {
-            btnExportSalesReport.setOnClickListener(v ->
-                    Toast.makeText(context, "Exporting sales report (" + currentFilter.name() + ")...", Toast.LENGTH_SHORT).show()
-            );
+            btnExportSalesReport.setOnClickListener(v -> showReceiptPreviewDialog());
+        }
+    }
+
+    private String buildReceiptText(long startMillis, long endMillis) {
+        long durationMillis = Math.max(86_400_000L, endMillis - startMillis + 1L);
+        long prevEndMillis = startMillis - 1L;
+        long prevStartMillis = prevEndMillis - durationMillis + 1L;
+
+        double currentSales = sumInRange(salesEntries, startMillis, endMillis);
+        double previousSales = sumInRange(salesEntries, prevStartMillis, prevEndMillis);
+        double currentExpenses = sumInRange(expenseEntries, startMillis, endMillis);
+        double previousExpenses = sumInRange(expenseEntries, prevStartMillis, prevEndMillis);
+        double netLeft = currentSales - currentExpenses;
+
+        Map<String, EmployeeSummary> summaryMap = new LinkedHashMap<String, EmployeeSummary>();
+        for (int i = 0; i < salesEntries.size(); i++) {
+            RecordEntry entry = salesEntries.get(i);
+            if (entry.timestampMillis >= startMillis && entry.timestampMillis <= endMillis) {
+                EmployeeSummary summary = summaryMap.get(entry.employeeName);
+                if (summary == null) {
+                    summary = new EmployeeSummary(entry.employeeName);
+                    summaryMap.put(entry.employeeName, summary);
+                }
+                summary.orderCount += 1;
+                summary.totalSales += entry.amount;
+            }
+        }
+
+        List<EmployeeSummary> rankedStaff = new ArrayList<EmployeeSummary>(summaryMap.values());
+        for (int outer = 0; outer < rankedStaff.size(); outer++) {
+            for (int inner = outer + 1; inner < rankedStaff.size(); inner++) {
+                if (rankedStaff.get(inner).totalSales > rankedStaff.get(outer).totalSales) {
+                    EmployeeSummary swap = rankedStaff.get(outer);
+                    rankedStaff.set(outer, rankedStaff.get(inner));
+                    rankedStaff.set(inner, swap);
+                }
+            }
+        }
+
+        Map<String, double[]> bucketed = buildBucketedSeries(startMillis, endMillis);
+        String rangeLabel = (tvSalesDateRange != null)
+                ? tvSalesDateRange.getText().toString()
+                : (shortDateFormat.format(new Date(startMillis)) + " - " + shortDateFormat.format(new Date(endMillis)));
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("========================================\n");
+        sb.append("           LE PAUZE COFFEE POS          \n");
+        sb.append("          SALES REPORT RECEIPT          \n");
+        sb.append("========================================\n");
+        sb.append("Filter   : ").append(currentFilter.name()).append("\n");
+        sb.append("Period   : ").append(rangeLabel).append("\n");
+        sb.append("Generated: ").append(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date())).append("\n");
+        sb.append("----------------------------------------\n");
+        sb.append("SUMMARY\n");
+        sb.append("Total Sales   : ").append(pesoFormat.format(currentSales)).append("\n");
+        sb.append("Total Expenses: ").append(pesoFormat.format(currentExpenses)).append("\n");
+        sb.append("Left / Net    : ").append(pesoFormat.format(netLeft)).append("\n");
+        sb.append("Prev Sales    : ").append(pesoFormat.format(previousSales)).append("\n");
+        sb.append("Prev Expenses : ").append(pesoFormat.format(previousExpenses)).append("\n");
+        sb.append("----------------------------------------\n");
+        sb.append("SALES BY EMPLOYEE\n");
+        if (rankedStaff.isEmpty()) {
+            sb.append("  No employee sales in this filter.\n");
+        } else {
+            for (EmployeeSummary emp : rankedStaff) {
+                sb.append(String.format(
+                        Locale.getDefault(),
+                        "  %-16s | %2d orders | %s\n",
+                        emp.name,
+                        emp.orderCount,
+                        pesoFormat.format(emp.totalSales)
+                ));
+            }
+        }
+        sb.append("----------------------------------------\n");
+        sb.append("BREAKDOWN\n");
+        for (Map.Entry<String, double[]> item : bucketed.entrySet()) {
+            double s = item.getValue()[0];
+            double e = item.getValue()[1];
+            double n = s - e;
+            sb.append(String.format(
+                    Locale.getDefault(),
+                    "  %s\n    Sales: %s | Expenses: %s | Net: %s\n",
+                    item.getKey(),
+                    pesoFormat.format(s),
+                    pesoFormat.format(e),
+                    pesoFormat.format(n)
+            ));
+        }
+        sb.append("========================================\n");
+        return sb.toString();
+    }
+
+    private void showReceiptPreviewDialog() {
+        long[] window = getWindowForFilter(currentFilter);
+        final String receiptText = buildReceiptText(window[0], window[1]);
+
+        TextView receiptView = new TextView(context);
+        receiptView.setText(receiptText);
+        receiptView.setTextColor(Color.parseColor("#1A1F17"));
+        receiptView.setTextSize(12f);
+        receiptView.setTypeface(Typeface.MONOSPACE);
+        receiptView.setPadding(36, 28, 36, 28);
+
+        ScrollView scrollView = new ScrollView(context);
+        scrollView.setBackgroundColor(Color.parseColor("#FAF8F4"));
+        scrollView.addView(receiptView);
+
+        new AlertDialog.Builder(context)
+                .setTitle("Review Sales Receipt (" + currentFilter.name() + ")")
+                .setView(scrollView)
+                .setPositiveButton("Save Sales Report", (dialog, which) -> saveReceiptAndConfirm(receiptText))
+                .setNeutralButton("Send to Notes", (dialog, which) -> shareReceiptToNotes(receiptText))
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void saveReceiptAndConfirm(String receiptText) {
+        File baseDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+        if (baseDir == null) {
+            baseDir = context.getFilesDir();
+        }
+        if (!baseDir.exists() && !baseDir.mkdirs()) {
+            Toast.makeText(context, "Could not create report folder.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String stamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String fileName = "LePauze_Sales_" + currentFilter.name() + "_" + stamp + ".txt";
+        File outFile = new File(baseDir, fileName);
+
+        try (FileOutputStream fos = new FileOutputStream(outFile)) {
+            fos.write(receiptText.getBytes(StandardCharsets.UTF_8));
+            fos.flush();
+
+            String savedLocation = outFile.getAbsolutePath();
+            Toast.makeText(context, "Saved to: " + savedLocation, Toast.LENGTH_LONG).show();
+
+            new AlertDialog.Builder(context)
+                    .setTitle("Sales Report Saved")
+                    .setMessage("Your " + currentFilter.name() + " sales report has been saved.\n\nSaved location:\n" + savedLocation)
+                    .setPositiveButton("Send to Notes", (d, w) -> shareReceiptToNotes(receiptText))
+                    .setNegativeButton("Done", null)
+                    .show();
+        } catch (IOException e) {
+            Toast.makeText(context, "Failed to save report: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void shareReceiptToNotes(String receiptText) {
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.setType("text/plain");
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "LePauze Coffee Sales Report (" + currentFilter.name() + ")");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, receiptText);
+
+        Intent chooser = Intent.createChooser(sendIntent, "Save / Open in Notes App");
+        if (chooser.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(chooser);
+        } else {
+            Toast.makeText(context, "No notes or text app found on this device.", Toast.LENGTH_SHORT).show();
         }
     }
 

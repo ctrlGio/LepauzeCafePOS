@@ -13,7 +13,7 @@ public class DashboardManager {
         this.rootView = rootView;
     }
 
-    public void onCreate(){
+    public static class Display{
 
     }
 }

@@ -147,9 +147,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private static class User {
-        private int id;
-        private String name;
-        private String pin;
+        private final int id;
+        private final String name;
+        private final String pin;
 
         public User(int id, String name, String pin) {
             this.id = id;
