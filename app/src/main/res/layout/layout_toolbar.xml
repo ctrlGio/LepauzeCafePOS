@@ -22,12 +22,12 @@
         app:layout_constraintTop_toTopOf="@id/pill_shift_status">
 
         <ImageView
-            android:id="@+id/menu_icon"
+            android:id="@+id/iv_menu_icon"
             android:layout_width="20dp"
             android:layout_height="18dp"
             android:layout_gravity="center"
             android:contentDescription="Menu icon"
-            android:src="@drawable/menu_barista_svg" />
+            android:src="@drawable/ic_menu_barista" />
     </FrameLayout>
 
     <!-- Shift Status Pill extended to the right edge -->
@@ -98,7 +98,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:contentDescription="@null"
-            android:src="@drawable/baseline_chevron_right_24"
+            android:src="@drawable/baseline_arrow_drop_down_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

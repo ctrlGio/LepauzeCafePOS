@@ -14,7 +14,7 @@
         android:layout_height="40dp"
         android:adjustViewBounds="true"
         android:scaleType="fitStart"
-        android:src="@drawable/temp_logo"
+        android:src="@drawable/img_temp_logo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,7 +26,7 @@
         android:contentDescription="Close menu"
         android:padding="8dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/menu_barista_svg"
+        android:src="@drawable/ic_menu_barista"
         app:layout_constraintBottom_toBottomOf="@id/iv_menu_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/iv_menu_logo"
@@ -203,6 +203,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
+            android:id="@+id/iv_nav_logout"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="@drawable/bg_outlined_box"
@@ -211,6 +212,7 @@
             app:tint="#F97316" />
 
         <TextView
+            android:id="@+id/tv_nav_logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"

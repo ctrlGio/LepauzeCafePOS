@@ -8,7 +8,7 @@
 
     <!-- LEFT SIDE: Cafe Photo Panel (Anchored directly to screen edges) -->
     <androidx.cardview.widget.CardView
-        android:id="@+id/leftCardPanel"
+        android:id="@+id/card_left_panel"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:cardCornerRadius="0dp"
@@ -24,11 +24,11 @@
 
             <!-- Background Cafe Photo -->
             <ImageView
-                android:id="@+id/ivBrandIllustration"
+                android:id="@+id/iv_brand_illustration"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/lepauze_loginbg"
+                android:src="@drawable/bg_login_background"
                 android:contentDescription="Le Pauze Coffee logo"/>
 
             <View
@@ -45,11 +45,11 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:gravity="center"
-        android:padding="32pid"
+        android:padding="32dp"
         android:background="#FFFFFF"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/leftCardPanel"
+        app:layout_constraintStart_toEndOf="@id/card_left_panel"
         app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
@@ -78,7 +78,7 @@
             android:layout_marginBottom="20dp">
 
             <AutoCompleteTextView
-                android:id="@+id/autoCompleteCashier"
+                android:id="@+id/auto_complete_cashier"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none" />
@@ -92,17 +92,17 @@
             android:gravity="center"
             android:layout_marginBottom="12dp">
 
-            <TextView android:id="@+id/pinBox1" style="@style/PinBoxStyle" />
-            <TextView android:id="@+id/pinBox2" style="@style/PinBoxStyle" />
-            <TextView android:id="@+id/pinBox3" style="@style/PinBoxStyle" />
-            <TextView android:id="@+id/pinBox4" style="@style/PinBoxStyle" />
-            <TextView android:id="@+id/pinBox5" style="@style/PinBoxStyle" />
-            <TextView android:id="@+id/pinBox6" style="@style/PinBoxStyle" />
+            <TextView android:id="@+id/tv_pin_box_1" style="@style/PinBoxStyle" />
+            <TextView android:id="@+id/tv_pin_box_2" style="@style/PinBoxStyle" />
+            <TextView android:id="@+id/tv_pin_box_3" style="@style/PinBoxStyle" />
+            <TextView android:id="@+id/tv_pin_box_4" style="@style/PinBoxStyle" />
+            <TextView android:id="@+id/tv_pin_box_5" style="@style/PinBoxStyle" />
+            <TextView android:id="@+id/tv_pin_box_6" style="@style/PinBoxStyle" />
         </LinearLayout>
 
         <!-- Forgot PIN? Link -->
         <TextView
-            android:id="@+id/tvForgotPin"
+            android:id="@+id/tv_forgot_pin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Forgot PIN?"
@@ -134,15 +134,15 @@
             <Button style="@style/LightKeypadButton" android:onClick="onPinDigitClick" android:text="8" />
             <Button style="@style/LightKeypadButton" android:onClick="onPinDigitClick" android:text="9" />
 
-            <Button style="@style/LightKeypadButtonText" android:id="@+id/btnClear" android:text="CLR" />
+            <Button style="@style/LightKeypadButtonText" android:id="@+id/btn_clear" android:text="CLR" />
             <Button style="@style/LightKeypadButton" android:onClick="onPinDigitClick" android:text="0" />
-            <Button style="@style/LightKeypadButtonText" android:id="@+id/btnDelete" android:text="⌫" />
+            <Button style="@style/LightKeypadButtonText" android:id="@+id/btn_delete" android:text="⌫" />
 
         </GridLayout>
 
         <!-- Log In Action Button -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnStartShift"
+            android:id="@+id/btn_start_shift"
             android:layout_width="300dp"
             android:layout_height="48dp"
             android:text="Log In"

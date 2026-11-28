@@ -1,5 +1,6 @@
 package com.example.lepauzecafepos;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -10,49 +11,54 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.lepauzecafepos.model.CashierUser;
+import com.google.android.material.button.MaterialButton;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
+
+    public static final String EXTRA_CASHIER_ID = "extra_cashier_id";
+    public static final String EXTRA_CASHIER_NAME = "extra_cashier_name";
+    public static final String EXTRA_CASHIER_ROLE = "extra_cashier_role";
 
     private AutoCompleteTextView autoCompleteCashier;
     private StringBuilder pinBuilder;
     private TextView[] pinBoxes;
     private static final int MAX_PIN_LENGTH = 6;
 
-    private List<User> userList;
-    private User selectedUser = null;
+    private List<CashierUser> userList;
+    private CashierUser selectedUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        autoCompleteCashier = findViewById(R.id.autoCompleteCashier);
+        autoCompleteCashier = findViewById(R.id.auto_complete_cashier);
         pinBuilder = new StringBuilder();
 
-        // Initialize the 6 individual PIN TextView boxes
         pinBoxes = new TextView[]{
-                findViewById(R.id.pinBox1),
-                findViewById(R.id.pinBox2),
-                findViewById(R.id.pinBox3),
-                findViewById(R.id.pinBox4),
-                findViewById(R.id.pinBox5),
-                findViewById(R.id.pinBox6)
+                findViewById(R.id.tv_pin_box_1),
+                findViewById(R.id.tv_pin_box_2),
+                findViewById(R.id.tv_pin_box_3),
+                findViewById(R.id.tv_pin_box_4),
+                findViewById(R.id.tv_pin_box_5),
+                findViewById(R.id.tv_pin_box_6)
         };
 
         loadSampleUsers();
 
-        // Clear ("CLR") button logic
-        Button btnClear = findViewById(R.id.btnClear);
+        Button btnClear = findViewById(R.id.btn_clear);
         btnClear.setOnClickListener(v -> {
             pinBuilder.setLength(0);
             updatePinDisplay();
             Toast.makeText(LoginActivity.this, "PIN Cleared", Toast.LENGTH_SHORT).show();
         });
 
-        // Delete ("⌫") button logic
-        Button btnDelete = findViewById(R.id.btnDelete);
+        Button btnDelete = findViewById(R.id.btn_delete);
         btnDelete.setOnClickListener(v -> {
             if (pinBuilder.length() > 0) {
                 pinBuilder.deleteCharAt(pinBuilder.length() - 1);
@@ -60,21 +66,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // Forgot PIN Click Listener
-        TextView tvForgotPin = findViewById(R.id.tvForgotPin);
-        tvForgotPin.setOnClickListener(v -> {
-            Toast.makeText(LoginActivity.this, "Please contact Admin to reset PIN.", Toast.LENGTH_LONG).show();
-            // TODO: Open Admin override dialog or recovery flow here
-        });
+        TextView tvForgotPin = findViewById(R.id.tv_forgot_pin);
+        tvForgotPin.setOnClickListener(v ->
+                Toast.makeText(LoginActivity.this, "Please contact Admin to reset PIN.", Toast.LENGTH_LONG).show()
+        );
 
-        // Login Button Action
-        com.google.android.material.button.MaterialButton btnStartShift = findViewById(R.id.btnStartShift);
+        MaterialButton btnStartShift = findViewById(R.id.btn_start_shift);
         btnStartShift.setOnClickListener(v -> attemptLogin());
     }
 
-    /**
-     * XML Click Handler for numeric keypad buttons (0-9)
-     */
     public void onPinDigitClick(View view) {
         if (view instanceof Button) {
             Button button = (Button) view;
@@ -87,14 +87,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Updates the individual boxes with typed digits or blanks
-     */
     private void updatePinDisplay() {
         String currentPin = pinBuilder.toString();
         for (int i = 0; i < pinBoxes.length; i++) {
             if (i < currentPin.length()) {
-                // Display the digit (or use "•" if you want it masked as bullets)
                 pinBoxes[i].setText(String.valueOf(currentPin.charAt(i)));
             } else {
                 pinBoxes[i].setText("");
@@ -104,12 +100,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loadSampleUsers() {
         userList = new ArrayList<>();
-        userList.add(new User(1, "Gio (Admin)", "123456"));
-        userList.add(new User(2, "Harvey (Cashier)", "654321"));
+        userList.add(new CashierUser("1", "Gio", "Admin", "123456"));
+        userList.add(new CashierUser("2", "Harvey", "Barista", "654321"));
 
         List<String> userDisplayNames = new ArrayList<>();
-        for (User u : userList) {
-            userDisplayNames.add(u.getName());
+        for (CashierUser u : userList) {
+            userDisplayNames.add(u.name + " (" + u.role + ")");
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -119,9 +115,9 @@ public class LoginActivity extends AppCompatActivity {
         );
         autoCompleteCashier.setAdapter(adapter);
 
-        autoCompleteCashier.setOnItemClickListener((parent, view, position, id) -> {
-            selectedUser = userList.get(position);
-        });
+        autoCompleteCashier.setOnItemClickListener((parent, view, position, id) ->
+                selectedUser = userList.get(position)
+        );
     }
 
     private void attemptLogin() {
@@ -136,28 +132,19 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        if (selectedUser.getPin().equals(enteredPin)) {
-            Toast.makeText(this, "Login Successful! Welcome, " + selectedUser.getName(), Toast.LENGTH_SHORT).show();
-            // TODO: Launch next activity
+        if (Objects.equals(selectedUser.pin, enteredPin)) {
+            Toast.makeText(this, "Welcome, " + selectedUser.name + "!", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.putExtra(EXTRA_CASHIER_ID, selectedUser.id);
+            intent.putExtra(EXTRA_CASHIER_NAME, selectedUser.name);
+            intent.putExtra(EXTRA_CASHIER_ROLE, selectedUser.role);
+            startActivity(intent);
+            finish();
         } else {
             Toast.makeText(this, "Incorrect PIN. Try again.", Toast.LENGTH_SHORT).show();
             pinBuilder.setLength(0);
             updatePinDisplay();
         }
-    }
-
-    private static class User {
-        private int id;
-        private String name;
-        private String pin;
-
-        public User(int id, String name, String pin) {
-            this.id = id;
-            this.name = name;
-            this.pin = pin;
-        }
-
-        public String getName() { return name; }
-        public String getPin() { return pin; }
     }
 }
